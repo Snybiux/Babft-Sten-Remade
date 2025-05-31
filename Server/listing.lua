@@ -173,7 +173,7 @@ local ExampleBlock; do
     ExampleBlock = Block
 end
 
-local images = loadstring(game:HttpGet("https://raw.githubusercontent.com/suntisalts/Sten/refs/heads/main/Blocklist.lua"))()
+local images = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sybiux/Babft-Sten-Remade/refs/heads/main/Server/blockslist.lua"))()
 
 local function Resize(part, new, delay)
 	local tweenInfo = TweenInfo.new(delay or 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
