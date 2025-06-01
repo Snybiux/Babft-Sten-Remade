@@ -244,14 +244,18 @@ function Functions:Add(name, needed, missing)
     newObject.TextButton.ImageLabel.Image = images[name]
     newObject.TextButton.TextLabel.Text = 'Needed: ' .. (needed or 0) .. '\nMissing: ' .. (missing or 0)
 
-    local bgColor = COLORS.GREEN
+    local bgColor = COLORS.RED
 
     if needed and needed > 0 then
-        local missingPercentage = (missing or 0) / needed
-        if missingPercentage == 1 or missingPercentage == 0.25 then
-            bgColor = COLORS.RED
-        elseif missingPercentage > 0.25 then
+        local missingCount = missing or 0
+        local missingPercentage = missingCount / needed
+
+        if missingCount == 0 then
+            bgColor = COLORS.GREEN
+        elseif missingPercentage > 0.25 and missingPercentage < 1 then
             bgColor = COLORS.YELLOW
+        elseif missingPercentage == 0.25 or missingPercentage == 1 then
+            bgColor = COLORS.RED
         end
     end
 
