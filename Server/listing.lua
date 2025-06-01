@@ -224,9 +224,9 @@ end
 local Functions = {}
 
 local COLORS = {
-    HIGH_MISSING = Color3.fromRGB(100, 30, 30),
-    MEDIUM_MISSING = Color3.fromRGB(120, 70, 20),
-    LOW_MISSING = Color3.fromRGB(30, 90, 30),
+    RED = Color3.fromRGB(100, 30, 30),
+    YELLOW = Color3.fromRGB(120, 90, 20),
+    GREEN = Color3.fromRGB(30, 90, 30),
 }
 
 function Functions:Clear()
@@ -244,13 +244,14 @@ function Functions:Add(name, needed, missing)
     newObject.TextButton.ImageLabel.Image = images[name]
     newObject.TextButton.TextLabel.Text = 'Needed: ' .. (needed or 0) .. '\nMissing: ' .. (missing or 0)
 
-    local bgColor = COLORS.LOW_MISSING
-    if missing and missing > 0 and needed and needed > 0 then
-        local missingPercentage = missing / needed
-        if missingPercentage >= 0.75 then
-            bgColor = COLORS.HIGH_MISSING
-        elseif missingPercentage >= 0.25 then
-            bgColor = COLORS.MEDIUM_MISSING
+    local bgColor = COLORS.GREEN
+
+    if needed and needed > 0 then
+        local missingPercentage = (missing or 0) / needed
+        if missingPercentage == 1 or missingPercentage == 0.25 then
+            bgColor = COLORS.RED
+        elseif missingPercentage > 0.25 then
+            bgColor = COLORS.YELLOW
         end
     end
 
