@@ -221,4 +221,46 @@ do -- [Open / Close] Window
     end)
 end
 
--
+local Functions = {}
+
+function Functions:Clear()
+    for i, v in next, ScrollingFrame:GetChildren() do
+        if (not v:IsA("UIListLayout")) then
+            v:Destroy()
+        end
+    end
+end
+
+function Functions:Add(name, needed, missing)
+    local newObject = ExampleBlock:Clone()
+    newObject.Parent = ScrollingFrame
+    
+    newObject.TextButton.ImageLabel.Image = images[name]
+    
+    newObject.TextButton.TextLabel.Text = 'Needed: ' .. (needed or 0) .. '\nMissing: ' .. (missing or 0)
+    
+    local bgColor
+    if missing and missing > 0 then
+        local missingPercentage = missing / needed
+        
+        if missingPercentage >= 0.75 then
+            bgColor = Color3.fromRGB(180, 40, 40)
+        elseif missingPercentage >= 0.25 then
+            bgColor = Color3.fromRGB(200, 100, 0)
+        else
+            bgColor = Color3.fromRGB(40, 140, 40)
+        end
+    else
+        bgColor = Color3.fromRGB(0, 100, 0)
+    end
+    
+    newObject.TextButton.ImageColor3 = bgColor
+    
+    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, (#ScrollingFrame:GetChildren() * 40 - 35))
+end
+
+TextButton.MouseButton1Click:Connect(function() 
+    Functions:Clear() 
+end)
+
+return Functions
