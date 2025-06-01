@@ -3,7 +3,7 @@ if existingGui then
     existingGui:Destroy()
 end
 
-task.wait(2)
+task.wait(1.5)
 
 local MainPart = Instance.new("ScreenGui")
 local Window = Instance.new("ImageLabel")
@@ -20,7 +20,7 @@ MainPart.Parent = game:GetService("CoreGui")
 MainPart.Name = "MainPart"
 
 Window.Name = "Window"
-Window.Position = UDim2.new(0, 800, 0, 40)
+Window.Position = UDim2.new(0, 700, 0, 40)
 Window.Parent = MainPart
 Window.Active = true
 Window.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -28,7 +28,7 @@ Window.BackgroundTransparency = 1.000
 Window.ClipsDescendants = true
 Window.Draggable = true
 Window.Selectable = true
-Window.Size = UDim2.new(0, 230, 0, 480)
+Window.Size = UDim2.new(0, 240, 0, 480)
 Window.ZIndex = 11
 Window.Image = "rbxassetid://2851926732"
 Window.ImageColor3 = Color3.fromRGB(20, 21, 23)
