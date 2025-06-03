@@ -253,9 +253,9 @@ function Functions:Add(name, needed, missing)
 
         if missingCount == 0 then
             bgColor = COLORS.GREEN
-        elseif missingPercentage > 0.25 and missingPercentage < 1 then
+        elseif missingPercentage >= 0.25 and missingPercentage < 1 then
             bgColor = COLORS.YELLOW
-        elseif missingPercentage == 0.25 or missingPercentage == 1 then
+        elseif missingPercentage < 0.25 or missingPercentage == 1 then
             bgColor = COLORS.RED
         end
     end
