@@ -228,6 +228,7 @@ local COLORS = {
     RED = Color3.fromRGB(100, 30, 30),
     YELLOW = Color3.fromRGB(120, 90, 20),
     GREEN = Color3.fromRGB(30, 90, 30),
+    NEUTRAL = Color3.fromRGB(80, 80, 80),
 }
 
 function Functions:Clear()
@@ -258,6 +259,8 @@ function Functions:Add(name, needed, missing)
         elseif missingPercentage > 0.5 or missingPercentage == 1 then
             bgColor = COLORS.RED
         end
+    else
+        bgColor = COLORS.GREEN
     end
 
     newObject.TextButton.ImageColor3 = bgColor
