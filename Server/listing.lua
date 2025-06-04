@@ -1,11 +1,3 @@
-local existingGui = game:GetService("CoreGui"):FindFirstChild("MainPart")
-if existingGui then
-    existingGui:Destroy()
-end
-
-task.wait(1.5)
-
-
 local MainPart = Instance.new("ScreenGui")
 local Window = Instance.new("ImageLabel")
 local Bar = Instance.new("Frame")
