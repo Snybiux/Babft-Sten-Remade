@@ -1,4 +1,4 @@
-print("Test1")
+print("Test2")
 local MainPart = Instance.new("ScreenGui")
 local Window = Instance.new("ImageLabel")
 local Bar = Instance.new("Frame")
@@ -14,7 +14,7 @@ MainPart.Parent = game:GetService("CoreGui")
 MainPart.Name = "MainPart"
 
 Window.Name = "Window"
-Window.Position = UDim2.new(0, 700, 0, 40)
+Window.Position = UDim2.new(0, 715, 0, 40)
 Window.Parent = MainPart
 Window.Active = true
 Window.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
