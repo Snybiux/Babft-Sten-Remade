@@ -805,7 +805,7 @@ Windows.Name = "Windows"
 Windows.Parent = imgui
 Windows.BackgroundColor3 = Color3.new(1, 1, 1)
 Windows.BackgroundTransparency = 1
-Windows.Position = UDim2.new(0, 300, 0, 20)
+Windows.Position = UDim2.new(0, 280, 0, 20)
 Windows.Size = UDim2.new(1, 20, 1, -20)
 
 --[[ Script ]]--
