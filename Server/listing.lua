@@ -13,7 +13,7 @@ MainPart.Parent = game:GetService("CoreGui")
 MainPart.Name = "MainPart"
 
 Window.Name = "Window"
-Window.Position = UDim2.new(0, 760, 0, 40)
+Window.Position = UDim2.new(4, 760, 4, 40)
 Window.Parent = MainPart
 Window.Active = true
 Window.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
