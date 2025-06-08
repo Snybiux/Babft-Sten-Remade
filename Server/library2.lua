@@ -1,9 +1,8 @@
 --[[
+    Its my own Version, added stuff like Inputs...
 	rbimgui-2
 	version 1.2
 	by Singularity
-        https://v3rmillion.net/member.php?action=profile&uid=947830
-        Singularity#5490
 --]]
 
 repeat wait() until game:GetService("Players").LocalPlayer
@@ -1974,6 +1973,145 @@ local library library = {
                         self.set(colorOptions.color)
                     end
                     self.close()
+                    return self
+                end
+
+                -- Add this to your types table (around line 1016 where other UI elements are defined)
+                function types.input(inputOptions)
+                    local self = { }
+                    self.event = event.new()
+                    self.eventBlock = false
+
+                    inputOptions = settings.new({
+                        text = "New Input",
+                        placeholder = "Enter text...",
+                        color = Color3.fromRGB(32, 59, 97),
+                        textcolor = Color3.new(1, 1, 1),
+                        rounding = options.rounding,
+                        size = 150,
+                    }).handle(inputOptions)
+
+                    -- Create a frame similar to the dropdown/slider
+                    local inputFrame = new("Slider") -- Reusing slider template since it has similar structure
+                    inputFrame.Parent = items
+                    inputFrame.Name = "InputFrame"
+    
+                    local outer = inputFrame:FindFirstChild("Outer")
+                    local inner = outer:FindFirstChild("Inner")
+                    local text = inputFrame:FindFirstChild("Text")
+                    local value = inner:FindFirstChild("Value")
+    
+                    -- Configure appearance
+                    outer.SliceScale = inputOptions.rounding / 100
+                    inner.SliceScale = inputOptions.rounding / 100
+                    inner.ImageColor3 = inputOptions.color
+                    value.TextColor3 = inputOptions.textcolor
+                    value.Text = inputOptions.placeholder
+                    value.TextXAlignment = Enum.TextXAlignment.Left
+                    value.Position = UDim2.new(0, 10, 0, 0)
+    
+                    -- Remove slider-specific elements
+                    inner:FindFirstChild("Slider"):Destroy()
+    
+                    -- Set sizes
+                    text.Text = inputOptions.text
+                    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
+                    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+                    inputFrame.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
+
+                    -- Input handling
+                    local currentText = ""
+                    local focused = false
+                    local lastTick = tick()
+                    local lastTickN = 1
+    
+                    local function updateText()
+                        value.Text = currentText == "" and inputOptions.placeholder or currentText
+                        value.TextColor3 = currentText == "" and Color3.fromRGB(178, 178, 178) or inputOptions.textcolor
+                    end
+    
+                    local function showCaret()
+                        if focused then
+                            value.Text = currentText .. (lastTickN == 1 and "|" or "")
+                            if (tick() - lastTick) >= 0.5 then
+                                lastTick = tick()
+                                lastTickN = 1 - lastTickN
+                            end
+                        end
+                    end
+    
+                    inner.MouseButton1Click:Connect(function()
+                        if findBrowsingTopMost() == main then
+                            focused = true
+                            spawn(function()
+                                while focused do
+                                    showCaret()
+                                    RunService.Heartbeat:Wait()
+                                end
+                                updateText()
+                            end)
+                        end
+                    end)
+    
+                    -- Handle text input
+                    UserInputService.InputBegan:Connect(function(input, processed)
+                        if not focused or processed then return end
+        
+                        if input.KeyCode == Enum.KeyCode.Return then
+                            focused = false
+                            if not self.eventBlock then
+                                self.event:Fire(currentText)
+                            end
+                        elseif input.KeyCode == Enum.KeyCode.Backspace then
+                            currentText = currentText:sub(1, -2)
+                            updateText()
+                        elseif input.KeyCode == Enum.KeyCode.Space then
+                            currentText = currentText .. " "
+                            updateText()
+                        elseif betweenOpenInterval(input.KeyCode.Value, 48, 57) then -- 0-9
+                            urrentText = currentText .. input.KeyCode.Name:sub(-1)
+                            updateText()
+                        elseif betweenOpenInterval(input.KeyCode.Value, 97, 122) then -- A-Z
+                            currentText = currentText .. input.KeyCode.Name:lower()
+                            updateText()
+                        end
+                    end)
+    
+                    -- Lose focus when clicking elsewhere
+                    mouse.InputBegan:Connect(function()
+                        if focused and findBrowsingTopMost() ~= main then
+                            focused = false
+                            if not self.eventBlock then
+                                self.event:Fire(currentText)
+                            end
+                        end
+                    end)
+    
+                    -- API functions
+                    function self.setText(text)
+                        currentText = tostring(text)
+                        updateText()
+                    end
+    
+                    function self.getText()
+                        return currentText
+                    end
+
+                    function self.setPlaceholder(text)
+                        inputOptions.placeholder = tostring(text)
+                        updateText()
+                    end
+    
+                    function self.setColor(color)
+                        inner.ImageColor3 = color
+                    end
+    
+                    function self:Destroy()
+                        inputFrame:Destroy()
+                    end
+    
+                    updateText()
+                    self.self = inputFrame
                     return self
                 end
 
