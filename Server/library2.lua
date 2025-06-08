@@ -1590,7 +1590,7 @@ local library library = {
                     return self
                 end
 
-                                function types.input(inputOptions)
+                function types.input(inputOptions)
                     local self = {}
                     self.event = event.new()
                     self.eventBlock = false
