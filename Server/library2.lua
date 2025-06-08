@@ -1,8 +1,9 @@
 --[[
-    Its my own Version, added stuff like Inputs...
 	rbimgui-2
 	version 1.2
 	by Singularity
+        https://v3rmillion.net/member.php?action=profile&uid=947830
+        Singularity#5490
 --]]
 
 repeat wait() until game:GetService("Players").LocalPlayer
@@ -1111,48 +1112,68 @@ do -- Load items
     Cache_2.Size = UDim2.new(0, 100, 0, 100)
     Cache_2.Visible = false
 
-    -- After creating all the other preset elements, add this:
     local Input = Instance.new("Frame")
     Input.Name = "Input"
-    Input.Parent = Presets  -- This is the critical line you're missing
-    Input.BackgroundTransparency = 1
-    Input.Size = UDim2.new(0, 150, 0, 20)
+    Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Input.BackgroundTransparency = 1.000
+    Input.Size = UDim2.new(0, 200, 0, 20) -- Default size, will be overridden by options
 
-    local Outer = Instance.new("ImageLabel")
-    Outer.Name = "Outer"
-    Outer.Parent = Input
-    Outer.Image = "rbxassetid://3570695787"
-    Outer.ImageColor3 = Color3.fromRGB(59, 59, 68)
-    Outer.ScaleType = Enum.ScaleType.Slice
-    Outer.SliceCenter = Rect.new(100, 100, 100, 100)
-    Outer.SliceScale = 0.050
-    Outer.Size = UDim2.new(1, 0, 1, 0)
+    local Outer_Input = Instance.new("ImageLabel")
+    Outer_Input.Name = "Outer"
+    Outer_Input.Parent = Input
+    Outer_Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Outer_Input.BackgroundTransparency = 1.000
+    Outer_Input.Size = UDim2.new(1, 0, 1, 0)
+    Outer_Input.Image = "rbxassetid://3570695787" -- Assuming this is your rounded image
+    Outer_Input.ImageColor3 = Color3.fromRGB(59, 59, 68) -- Default outer border color
+    Outer_Input.ScaleType = Enum.ScaleType.Slice
+    Outer_Input.SliceCenter = Rect.new(100, 100, 100, 100)
+    Outer_Input.SliceScale = 0.050 -- Default rounding, will be overridden
 
-    local Inner = Instance.new("TextBox")
-    Inner.Name = "Inner"
-    Inner.Parent = Outer
-    Inner.BackgroundTransparency = 1
-    Inner.Position = UDim2.new(0, 2, 0, 2)
-    Inner.Size = UDim2.new(1, -4, 1, -4)
-    Inner.Font = Enum.Font.Code
-    Inner.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Inner.TextSize = 14
-    Inner.TextXAlignment = Enum.TextXAlignment.Left
-    Inner.Text = ""
-    Inner.PlaceholderText = "Enter text..."
-    Inner.ClearTextOnFocus = false
+    local Inner_Input = Instance.new("ImageLabel")
+    Inner_Input.Name = "Inner"
+    Inner_Input.Parent = Outer_Input
+    Inner_Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Inner_Input.BackgroundTransparency = 1.000
+    Inner_Input.Position = UDim2.new(0, 2, 0, 2) -- Inner padding
+    Inner_Input.Size = UDim2.new(1, -4, 1, -4) -- Inner padding (100% - 4px)
+    Inner_Input.Image = "rbxassetid://3570695787"
+    Inner_Input.ImageColor3 = Color3.fromRGB(32, 59, 97) -- Default inner background color
+    Inner_Input.ScaleType = Enum.ScaleType.Slice
+    Inner_Input.SliceCenter = Rect.new(100, 100, 100, 100)
+    Inner_Input.SliceScale = 0.050
 
-    local Text = Instance.new("TextLabel")
-    Text.Name = "Text"
-    Text.Parent = Input
-    Text.BackgroundTransparency = 1
-    Text.Position = UDim2.new(0, 158, 0, 0)
-    Text.Size = UDim2.new(0, 42, 1, 0)
-    Text.Font = Enum.Font.Code
-    Text.Text = "Input"
-    Text.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Text.TextSize = 14
-    Text.TextXAlignment = Enum.TextXAlignment.Left
+    local TextBox_Input = Instance.new("TextBox")
+    TextBox_Input.Name = "TextBox"
+    TextBox_Input.Parent = Inner_Input
+    TextBox_Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextBox_Input.BackgroundTransparency = 1.000
+    TextBox_Input.Position = UDim2.new(0, 5, 0, 0) -- Small left padding for text
+    TextBox_Input.Size = UDim2.new(1, -10, 1, 0) -- Full width minus padding
+    TextBox_Input.Font = Enum.Font.Code
+    TextBox_Input.Text = "" -- Will be empty initially
+    TextBox_Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextBox_Input.TextSize = 14.000
+    TextBox_Input.TextXAlignment = Enum.TextXAlignment.Left
+    TextBox_Input.TextYAlignment = Enum.TextYAlignment.Center
+    TextBox_Input.ClearTextOnFocus = true -- Default behavior
+    TextBox_Input.MultiLine = false -- Default behavior
+    TextBox_Input.TextWrapped = true
+
+    local Placeholder_Input = Instance.new("TextLabel")
+    Placeholder_Input.Name = "Placeholder"
+    Placeholder_Input.Parent = Inner_Input
+    Placeholder_Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Placeholder_Input.BackgroundTransparency = 1.000
+    Placeholder_Input.Position = UDim2.new(0, 5, 0, 0) -- Same position as TextBox
+    Placeholder_Input.Size = UDim2.new(1, -10, 1, 0)
+    Placeholder_Input.Font = Enum.Font.Code
+    Placeholder_Input.Text = "Enter text..." -- Default placeholder text
+    Placeholder_Input.TextColor3 = Color3.fromRGB(150, 150, 150) -- Faded color
+    Placeholder_Input.TextSize = 14.000
+    Placeholder_Input.TextXAlignment = Enum.TextXAlignment.Left
+    Placeholder_Input.TextYAlignment = Enum.TextYAlignment.Center
+    Placeholder_Input.Visible = true -- Initially visible
 end
 
 local RunService = game:GetService("RunService")
@@ -1430,7 +1451,7 @@ local library library = {
 
         options = settings.new({
             text = "New Window",
-            size = Vector2.new(300, 800),
+            size = Vector2.new(300, 200),
             shadow = 10,
             transparency = 0.2,
             color = Color3.fromRGB(41, 74, 122),
@@ -1569,6 +1590,111 @@ local library library = {
                     return self
                 end
 
+                                function types.input(inputOptions)
+                    local self = {}
+                    self.event = event.new()
+                    self.eventBlock = false
+
+                    inputOptions = settings.new({
+                        text = "Enter text...",
+                        width = 200,
+                        height = 20,
+                        color = options.color, -- Uses the window's main color for consistency
+                        textcolor = Color3.new(1, 1, 1),
+                        font = Enum.Font.Code,
+                        textSize = 14,
+                        rounding = options.rounding,
+                        multiline = false,
+                        clearOnFocus = true,
+                    }).handle(inputOptions)
+
+                    local input = new("Input") -- We'll define a base "Input" preset in Presets
+                    input.Parent = items
+
+                    local outer = input:FindFirstChild("Outer")
+                    local inner = outer:FindFirstChild("Inner")
+                    local textbox = inner:FindFirstChild("TextBox")
+                    local placeholder = inner:FindFirstChild("Placeholder") -- For placeholder text
+
+                    -- Apply sizing and positioning
+                    input.Size = UDim2.new(0, inputOptions.width, 0, inputOptions.height)
+                    outer.Size = UDim2.new(1, 0, 1, 0)
+                    inner.Size = UDim2.new(1, -4, 1, -4) -- Inner padding
+
+                    -- Apply colors and rounding
+                    outer.ImageColor3 = inputOptions.color
+                    inner.ImageColor3 = Color3.fromRGB(32, 59, 97) -- A darker shade for the inner part, similar to Dropdown
+                    outer.SliceScale = inputOptions.rounding / 100
+                    inner.SliceScale = inputOptions.rounding / 100
+
+                    -- Configure the TextBox
+                    textbox.Font = inputOptions.font
+                    textbox.TextSize = inputOptions.textSize
+                    textbox.TextColor3 = inputOptions.textcolor
+                    textbox.TextXAlignment = Enum.TextXAlignment.Left
+                    textbox.TextYAlignment = Enum.TextYAlignment.Center
+                    textbox.BackgroundTransparency = 1 -- Important for seeing the inner frame
+                    textbox.ClearTextOnFocus = inputOptions.clearOnFocus
+                    textbox.MultiLine = inputOptions.multiline
+
+                    -- Placeholder text
+                    placeholder.Text = inputOptions.text
+                    placeholder.Font = inputOptions.font
+                    placeholder.TextSize = inputOptions.textSize
+                    placeholder.TextColor3 = inputOptions.textcolor:Lerp(Color3.new(0.5, 0.5, 0.5), 0.5) -- Slightly faded
+                    placeholder.TextXAlignment = Enum.TextXAlignment.Left
+                    placeholder.TextYAlignment = Enum.TextYAlignment.Center
+                    placeholder.BackgroundTransparency = 1
+                    placeholder.Visible = (textbox.Text == "") -- Initially visible if empty
+
+                    -- Update placeholder visibility
+                    textbox:GetPropertyChangedSignal("Text"):Connect(function()
+                        placeholder.Visible = (textbox.Text == "")
+                        if not self.eventBlock then
+                            self.event:Fire(textbox.Text)
+                        end
+                    end)
+
+                    -- Event for when the user presses Enter or loses focus
+                    textbox.Focused:Connect(function()
+                        -- Hide placeholder when focused, even if ClearTextOnFocus is false
+                        placeholder.Visible = false
+                    end)
+                    textbox.FocusLost:Connect(function(enterPressed)
+                        -- Show placeholder if empty after losing focus
+                        placeholder.Visible = (textbox.Text == "")
+                        if enterPressed and not self.eventBlock then
+                            self.event:Fire(textbox.Text) -- Fire event on Enter pressed
+                        end
+                    end)
+
+                    function self.setText(text)
+                        textbox.Text = text
+                        placeholder.Visible = (textbox.Text == "") -- Update placeholder on manual set
+                    end
+
+                    function self.getText()
+                        return textbox.Text
+                    end
+
+                    function self.setColor(color)
+                        outer.ImageColor3 = color
+                    end
+
+                    function self.setPlaceholder(text)
+                        inputOptions.text = text
+                        placeholder.Text = text
+                    end
+
+                    function self:Destroy()
+                        input:Destroy()
+                    end
+
+                    self.options = inputOptions
+                    self.self = input
+                    return self
+                end
+
                 function types.button(buttonOptions)
                     local self = { }
                     self.eventBlock = false
@@ -1613,64 +1739,6 @@ local library library = {
                     self.options = buttonOptions
                     self.self = button
                     self.event = event.new()
-                    return self
-                end
-
-                function types.input(inputOptions)
-                    local self = { }
-                    self.event = event.new()
-    
-                    inputOptions = settings.new({
-                        text = "New Input",
-                        placeholder = "Enter text...",
-                        color = Color3.fromRGB(32, 59, 97),
-                        textcolor = Color3.new(1, 1, 1),
-                        rounding = options.rounding,
-                        size = 150,
-                    }).handle(inputOptions)
-
-                    local input = new("Input")
-                    input.Parent = items
-    
-                    local outer = input:FindFirstChild("Outer")
-                    local inner = input:FindFirstChild("Inner")
-                    local text = input:FindFirstChild("Text")
-    
-                    -- Configure appearance
-                    outer.SliceScale = inputOptions.rounding / 100
-                    inner.TextColor3 = inputOptions.textcolor
-                    inner.PlaceholderText = inputOptions.placeholder
-    
-                    -- Set sizes
-                    text.Text = inputOptions.text
-                    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-                    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-                    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
-
-                    -- Event handling
-                    inner.FocusLost:Connect(function(enterPressed)
-                        if not self.eventBlock then
-                            self.event:Fire(inner.Text, enterPressed)
-                        end
-                    end)
-
-                    function self.setText(text)
-                        inner.Text = tostring(text)
-                    end
-    
-                    function self.getText()
-                        return inner.Text
-                    end
-    
-                    function self.setPlaceholder(text)
-                        inner.PlaceholderText = tostring(text)
-                    end
-    
-                    function self:Destroy()
-                        input:Destroy()
-                    end
-    
-                    self.self = input
                     return self
                 end
 
