@@ -1111,8 +1111,10 @@ do -- Load items
     Cache_2.Size = UDim2.new(0, 100, 0, 100)
     Cache_2.Visible = false
 
+    -- After creating all the other preset elements, add this:
     local Input = Instance.new("Frame")
     Input.Name = "Input"
+    Input.Parent = Presets  -- This is the critical line you're missing
     Input.BackgroundTransparency = 1
     Input.Size = UDim2.new(0, 150, 0, 20)
 
@@ -1126,7 +1128,7 @@ do -- Load items
     Outer.SliceScale = 0.050
     Outer.Size = UDim2.new(1, 0, 1, 0)
 
-    local Inner = Instance.new("TextBox") -- Changed to TextBox instead of ImageLabel
+    local Inner = Instance.new("TextBox")
     Inner.Name = "Inner"
     Inner.Parent = Outer
     Inner.BackgroundTransparency = 1
