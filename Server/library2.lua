@@ -2248,6 +2248,13 @@ local library library = {
                     return self
                 end
 
+		local UserInputService = game:GetService("UserInputService")
+		local Players = game:GetService("Players")
+		local RunService = game:GetService("RunService")
+		
+		local PlayerModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"))
+		local controls = PlayerModule:GetControls()
+		
 		function types.input(inputOptions)
 		    local self = { }
 		    self.event = event.new()
@@ -2262,20 +2269,19 @@ local library library = {
 		        size = 150,
 		    }).handle(inputOptions)
 		
-		    local input = new("Dropdown") -- We'll reuse the dropdown style for inputs
+		    local input = new("Dropdown")
 		    input.Parent = items
 		    local outer = input:FindFirstChild("Outer")
 		    local inner = outer:FindFirstChild("Inner")
 		    local value = inner:FindFirstChild("Value")
 		    local text = input:FindFirstChild("Text")
-		    
-		    -- Configure the input box
+		
 		    outer.SliceScale = inputOptions.rounding / 100
 		    inner.SliceScale = inputOptions.rounding / 100
 		    inner.ImageColor3 = inputOptions.color
 		    value.Text = inputOptions.placeholder
-		    value.TextColor3 = Color3.fromRGB(178, 178, 178) -- Gray placeholder text
-		    
+		    value.TextColor3 = Color3.fromRGB(178, 178, 178)
+		
 		    text.Text = inputOptions.text
 		    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
 		    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
@@ -2288,37 +2294,42 @@ local library library = {
 		    local canType = false
 		    local shift = false
 		    local backspace = false
-		    
+		
 		    -- Mouse enter/leave detection
 		    inner.MouseEnter:Connect(function()
 		        inTextBox = true
 		    end)
-		    
+		
 		    inner.MouseLeave:Connect(function()
 		        inTextBox = false
 		    end)
 		
-		    -- Function to update the displayed text
 		    local function updateText()
 		        if textValue == "" then
 		            value.Text = inputOptions.placeholder
 		            value.TextColor3 = Color3.fromRGB(178, 178, 178)
 		        else
-		            value.Text = textValue .. (lastTickN == 1 and "|" or "")
+		            if canType then
+		                value.Text = textValue .. (lastTickN == 1 and "|" or "")
+		            else
+		                value.Text = textValue
+		            end
 		            value.TextColor3 = Color3.new(1, 1, 1)
 		        end
 		    end
 		
-		    -- Handle mouse clicks
 		    mouse.InputBegan:Connect(function()
-		        if inTextBox and findBrowsingTopMost() == main then
-		            canType = true
+		        if inTextBox and findBrowseTopMost() == main then
+		            if not canType then 
+		                canType = true
+		                controls:Disable() 
+		            end
+		
 		            if inputOptions.clearonfocus and textValue == "" then
 		                textValue = ""
 		                updateText()
 		            end
-		            
-		            -- Show cursor blinking
+		
 		            spawn(function()
 		                while canType do
 		                    updateText()
@@ -2332,19 +2343,23 @@ local library library = {
 		                updateText()
 		            end)
 		        else
-		            canType = false
-		            updateText()
+		            if canType then
+		                canType = false
+		                controls:Enable()
+		                updateText()
+		            end
 		        end
 		    end)
 		
-		    -- Handle keyboard input
-		    UserInputService.InputBegan:Connect(function(inputObject)
+		    UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
+		        if gameProcessedEvent then return end
+		
 		        local keycode = inputObject.KeyCode
-		        
-		        if keycode == Enum.KeyCode.LeftShift then
+		
+		        if keycode == Enum.KeyCode.LeftShift or keycode == Enum.KeyCode.RightShift then
 		            shift = true
 		        end
-		        
+		
 		        if canType then
 		            if keycode == Enum.KeyCode.Backspace then
 		                backspace = true
@@ -2372,8 +2387,7 @@ local library library = {
 		                updateText()
 		                self.event:Fire(textValue)
 		            end
-		            
-		            -- Handle alphanumeric input
+		
 		            if betweenOpenInterval(keycode.Value, 48, 57) then -- 0-9
 		                local name = rawget({ Zero = "0", One = "1", Two = "2", Three = "3", Four = "4", Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9" }, keycode.Name)
 		                if shift then
@@ -2383,7 +2397,7 @@ local library library = {
 		                updateText()
 		                self.event:Fire(textValue)
 		            end
-		            
+		
 		            if betweenOpenInterval(keycode.Value, 97, 122) then -- A-Z
 		                local name = (not shift) and keycode.Name:lower() or keycode.Name
 		                textValue = textValue .. name
@@ -2394,14 +2408,13 @@ local library library = {
 		    end)
 		
 		    UserInputService.InputEnded:Connect(function(inputObject)
-		        if inputObject.KeyCode == Enum.KeyCode.LeftShift then
+		        if inputObject.KeyCode == Enum.KeyCode.LeftShift or inputObject.KeyCode == Enum.KeyCode.RightShift then
 		            shift = false
 		        elseif inputObject.KeyCode == Enum.KeyCode.Backspace then
 		            backspace = false
 		        end
 		    end)
 		
-		    -- Public methods
 		    function self.setText(text)
 		        textValue = text or ""
 		        updateText()
@@ -2420,6 +2433,7 @@ local library library = {
 		    end
 		
 		    function self:Destroy()
+		        controls:Enable()
 		        input:Destroy()
 		    end
 		
