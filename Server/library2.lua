@@ -2331,28 +2331,28 @@ local library library = {
 		
 		    mouse.InputBegan:Connect(function()
 		        if inTextBox and findBrowsingTopMost() == main then
-		            canType = true
-		            disableMovement()
-		
-		            if inputOptions.clearonfocus and textValue == "" then
-		                textValue = ""
-		                updateText()
-		            end
-		
-		            spawn(function()
-		                while canType do
+		            if not canType then
+		                canType = true
+		                disableMovement()
+		                if inputOptions.clearonfocus then
+		                    textValue = ""          -- Placeholder sofort weg beim Klick
 		                    updateText()
-		                    if (tick() - lastTick) >= 0.5 then
-		                        lastTick = tick()
-		                        lastTickN = 1 - lastTickN
-		                    end
-		                    RunService.Heartbeat:Wait()
 		                end
-		                lastTickN = 0
-		                updateText()
-		            end)
+		
+		                spawn(function()
+		                    while canType do
+		                        updateText()
+		                        if (tick() - lastTick) >= 0.5 then
+		                            lastTick = tick()
+		                            lastTickN = 1 - lastTickN
+		                        end
+		                        RunService.Heartbeat:Wait()
+		                    end
+		                    lastTickN = 0
+		                    updateText()
+		                end)
+		            end
 		        else
-		            -- Fokusverlust: automatisch speichern & beenden
 		            if canType then
 		                canType = false
 		                self.event:Fire(textValue)
