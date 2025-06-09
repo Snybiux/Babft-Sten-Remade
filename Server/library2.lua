@@ -2331,11 +2331,12 @@ local library library = {
 		
 		    mouse.InputBegan:Connect(function()
 		        if inTextBox and findBrowsingTopMost() == main then
+			    textValue = " "
 		            if not canType then
 		                canType = true
 		                disableMovement()
 		                if inputOptions.clearonfocus then
-		                    textValue = ""          -- Placeholder sofort weg beim Klick
+		                    textValue = " "          -- Placeholder sofort weg beim Klick
 		                    updateText()
 		                end
 		
