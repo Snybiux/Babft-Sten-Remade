@@ -1,221 +1,196 @@
-print("Test2")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
 
-local MainPart = Instance.new("ScreenGui")
-local Window = Instance.new("ImageLabel")
-local Bar = Instance.new("Frame")
-local Toggle = Instance.new("ImageButton")
-local Base = Instance.new("ImageLabel")
-local Top = Instance.new("ImageLabel")
-local Title = Instance.new("TextLabel")
-local Tabs = Instance.new("Frame")
-local ScrollingFrame = Instance.new("ScrollingFrame")
-local UIListLayout = Instance.new("UIListLayout")
+-- Colors
+local MAIN_COLOR = Color3.fromRGB(41, 74, 122)
+local BACKGROUND_COLOR = Color3.fromRGB(21, 22, 23)
+local TEXT_COLOR = Color3.fromRGB(255, 255, 255)
 
-MainPart.Parent = game:GetService("CoreGui")
+local MainPart = Instance.new("ScreenGui", CoreGui)
 MainPart.Name = "MainPart"
 
+local Window = Instance.new("ImageLabel", MainPart)
 Window.Name = "Window"
 Window.Position = UDim2.new(0, 715, 0, 40)
-Window.Parent = MainPart
-Window.Active = true
-Window.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Window.BackgroundTransparency = 1.000
-Window.ClipsDescendants = true
-Window.Draggable = true
-Window.Selectable = true
 Window.Size = UDim2.new(0, 240, 0, 500)
-Window.ZIndex = 11
 Window.Image = "rbxassetid://2851926732"
-Window.ImageColor3 = Color3.fromRGB(20, 21, 23)
+Window.ImageColor3 = BACKGROUND_COLOR
+Window.ImageTransparency = 0.3
 Window.ScaleType = Enum.ScaleType.Slice
 Window.SliceCenter = Rect.new(12, 12, 12, 12)
+Window.Active = true
 Window.Draggable = true
+Window.BackgroundTransparency = 1
+Window.ZIndex = 11
 
+local Bar = Instance.new("Frame", Window)
 Bar.Name = "Bar"
-Bar.Parent = Window
-Bar.BackgroundColor3 = Color3.fromRGB(41, 74, 122)
-Bar.BorderSizePixel = 0
-Bar.Position = UDim2.new(0, 0, 0, 5)
 Bar.Size = UDim2.new(1, 0, 0, 15)
+Bar.Position = UDim2.new(0, 0, 0, 5)
+Bar.BackgroundColor3 = MAIN_COLOR
+Bar.BorderSizePixel = 0
 Bar.ZIndex = 11
 
+local Toggle = Instance.new("ImageButton", Bar)
 Toggle.Name = "Toggle"
-Toggle.Parent = Bar
-Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Toggle.BackgroundTransparency = 1.000
-Toggle.Position = UDim2.new(0, 5, 0, -2)
-Toggle.Rotation = 90.000
 Toggle.Size = UDim2.new(0, 20, 0, 20)
-Toggle.ZIndex = 12
+Toggle.Position = UDim2.new(0, 5, 0, -2)
 Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=4731371541"
+Toggle.BackgroundTransparency = 1
+Toggle.ZIndex = 12
 
+local Base = Instance.new("ImageLabel", Bar)
 Base.Name = "Base"
-Base.Parent = Bar
-Base.BackgroundColor3 = Color3.fromRGB(41, 74, 122)
-Base.BorderSizePixel = 0
-Base.Position = UDim2.new(0, 0, 0.800000012, 0)
 Base.Size = UDim2.new(1, 0, 0, 10)
-Base.ZIndex = 11
+Base.Position = UDim2.new(0, 0, 0.8, 0)
 Base.Image = "rbxassetid://2851926732"
-Base.ImageColor3 = Color3.fromRGB(41, 74, 122)
+Base.ImageColor3 = MAIN_COLOR
 Base.ScaleType = Enum.ScaleType.Slice
 Base.SliceCenter = Rect.new(12, 12, 12, 12)
+Base.BackgroundTransparency = 1
+Base.ZIndex = 11
 
+local Top = Instance.new("ImageLabel", Bar)
 Top.Name = "Top"
-Top.Parent = Bar
-Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Top.BackgroundTransparency = 1.000
-Top.Position = UDim2.new(0, 0, 0, -5)
 Top.Size = UDim2.new(1, 0, 0, 10)
-Top.ZIndex = 11
+Top.Position = UDim2.new(0, 0, 0, -5)
 Top.Image = "rbxassetid://2851926732"
-Top.ImageColor3 = Color3.fromRGB(41, 74, 122)
+Top.ImageColor3 = MAIN_COLOR
 Top.ScaleType = Enum.ScaleType.Slice
 Top.SliceCenter = Rect.new(12, 12, 12, 12)
+Top.BackgroundTransparency = 1
+Top.ZIndex = 11
 
+local Title = Instance.new("TextLabel", Window)
 Title.Name = "Title"
-Title.Parent = Window
-Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title.BackgroundTransparency = 1.000
 Title.Position = UDim2.new(0, 30, 0, 3)
 Title.Size = UDim2.new(0, 200, 0, 20)
-Title.ZIndex = 11
+Title.BackgroundTransparency = 1
+Title.Text = "Snybiux Beta Auto Build"
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Block Listing"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 14.000
+Title.TextColor3 = TEXT_COLOR
+Title.TextSize = 14
 Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.ZIndex = 11
 
+local Tabs = Instance.new("Frame", Window)
 Tabs.Name = "Tabs"
-Tabs.Parent = Window
-Tabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Tabs.BackgroundTransparency = 1.000
 Tabs.Position = UDim2.new(0, 0, 0, 28)
 Tabs.Size = UDim2.new(1, 0, 1, -30)
+Tabs.BackgroundTransparency = 1
 Tabs.ZIndex = 11
 
-ScrollingFrame.Parent = Tabs
-ScrollingFrame.Active = true
-ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ScrollingFrame.BackgroundTransparency = 1.000
-ScrollingFrame.BorderColor3 = Color3.fromRGB(41, 74, 122)
+local ScrollingFrame = Instance.new("ScrollingFrame", Tabs)
 ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.BorderColor3 = MAIN_COLOR
 ScrollingFrame.ScrollBarThickness = 4
+ScrollingFrame.Active = true
 
-UIListLayout.Parent = ScrollingFrame
+local UIListLayout = Instance.new("UIListLayout", ScrollingFrame)
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-local TextButton = Instance.new("TextButton")
-local UICorner = Instance.new("UICorner")
+local ClearButton = Instance.new("TextButton", Bar)
+ClearButton.Name = "Clear"
+ClearButton.Size = UDim2.new(0, 60, 0, 20)
+ClearButton.Position = UDim2.new(1, -64, 0, -1)
+ClearButton.BackgroundColor3 = MAIN_COLOR
+ClearButton.Font = Enum.Font.GothamMedium
+ClearButton.Text = "Clear"
+ClearButton.TextColor3 = TEXT_COLOR
+ClearButton.TextSize = 13
+ClearButton.ZIndex = 99
 
-TextButton.Parent = Bar
-TextButton.BackgroundColor3 = Color3.fromRGB(230, 0, 0)
-TextButton.Size = UDim2.new(0, 40, 0, 20)
-TextButton.Font = Enum.Font.GothamMedium
-TextButton.Text = "Clear"
-TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton.TextSize = 13
-TextButton.Size = UDim2.new(0, 60, 0, 20)
-TextButton.Position = UDim2.new(1, -64, 0, -1)
-TextButton.ZIndex = 99
-
+local UICorner = Instance.new("UICorner", ClearButton)
 UICorner.CornerRadius = UDim.new(0, 5)
-UICorner.Parent = TextButton
 
-local ExampleBlock; do
-    local Block = Instance.new("Frame")
-    local TextButton = Instance.new("ImageLabel")
-    local ImageLabel = Instance.new("ImageLabel")
-    local TextLabel = Instance.new("TextLabel")
-    
-    Block.Name = "Block"
-    Block.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Block.BackgroundTransparency = 1.000
-    Block.Size = UDim2.new(1, 0, 0, 40)
-    
-    TextButton.Name = "TextButton"
-    TextButton.Parent = Block
-    TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextButton.BackgroundTransparency = 1.000
-    TextButton.Position = UDim2.new(0, 5, 0, 5)
-    TextButton.Size = UDim2.new(1, -15, 1, -5)
-    TextButton.ZIndex = 11
-    TextButton.Image = "rbxassetid://2851929490"
-    TextButton.ImageColor3 = Color3.fromRGB(41, 74, 122)
-    TextButton.ScaleType = Enum.ScaleType.Slice
-    TextButton.SliceCenter = Rect.new(4, 4, 4, 4)
-    
-    ImageLabel.Parent = TextButton
-    ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageLabel.BackgroundTransparency = 1.000
-    ImageLabel.Size = UDim2.new(0, 40, 1, 0)
-    ImageLabel.Image = "rbxassetid://845567732"
-    ImageLabel.ZIndex = 12
-    
-    TextLabel.Parent = TextButton
-    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.BackgroundTransparency = 1.000
-    TextLabel.Position = UDim2.new(0, 50, 0, 0)
-    TextLabel.Size = UDim2.new(1, -50, 1, 0)
-    TextLabel.Font = Enum.Font.GothamBold
-    TextLabel.Text = "Needed : 1\nMissing : 0"
-    TextLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-    TextLabel.TextSize = 14.000
-    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-    TextLabel.RichText = true
-    TextLabel.ZIndex = 13
+-- Template block
+local ExampleBlock = Instance.new("Frame")
+ExampleBlock.Name = "Block"
+ExampleBlock.Size = UDim2.new(1, 0, 0, 40)
+ExampleBlock.BackgroundTransparency = 1
 
-    ExampleBlock = Block
-end
+local BlockBG = Instance.new("ImageLabel", ExampleBlock)
+BlockBG.Name = "TextButton"
+BlockBG.Size = UDim2.new(1, -15, 1, -5)
+BlockBG.Position = UDim2.new(0, 5, 0, 5)
+BlockBG.Image = "rbxassetid://2851926732"
+BlockBG.ImageColor3 = BACKGROUND_COLOR
+BlockBG.ImageTransparency = 0.3
+BlockBG.ScaleType = Enum.ScaleType.Slice
+BlockBG.SliceCenter = Rect.new(12, 12, 12, 12)
+BlockBG.BackgroundTransparency = 1
+BlockBG.ZIndex = 11
+
+local Icon = Instance.new("ImageLabel", BlockBG)
+Icon.Size = UDim2.new(0, 40, 1, 0)
+Icon.Image = "rbxassetid://845567732"
+Icon.BackgroundTransparency = 1
+Icon.ZIndex = 12
+
+local BlockText = Instance.new("TextLabel", BlockBG)
+BlockText.Size = UDim2.new(1, -50, 1, 0)
+BlockText.Position = UDim2.new(0, 50, 0, 0)
+BlockText.Text = "Needed: 1\nMissing: 0"
+BlockText.Font = Enum.Font.Gotham
+BlockText.TextColor3 = TEXT_COLOR
+BlockText.TextSize = 14
+BlockText.TextXAlignment = Enum.TextXAlignment.Left
+BlockText.BackgroundTransparency = 1
+BlockText.RichText = true
+BlockText.ZIndex = 13
 
 local images = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sybiux/Babft-Sten-Remade/refs/heads/main/Server/blockslist.lua"))()
 
-local function Resize(part, new, delay)
-	local tweenInfo = TweenInfo.new(delay or 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	game:GetService("TweenService"):Create(part, tweenInfo, new):Play()
+local function Resize(part, newProps, speed)
+    local tween = TweenInfo.new(speed or 0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    TweenService:Create(part, tween, newProps):Play()
 end
 
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if (input.KeyCode == Enum.KeyCode.RightShift) then
+-- Toggle keybind
+UserInputService.InputBegan:Connect(function(input, gpe)
+    if input.KeyCode == Enum.KeyCode.RightShift then
         Window.Visible = not Window.Visible
     end
 end)
 
-do -- [Open / Close] Window
-    local open_close = Window:FindFirstChild("Bar"):FindFirstChild("Toggle")
+-- Collapse animation
+do
+    local open_close = Toggle
     local open, canopen = true, true
-
-    local oldwindowdata = {}
-    local oldy = Window.AbsoluteSize.Y
+    local oldData = {}
+    local oldY = Window.AbsoluteSize.Y
 
     open_close.MouseButton1Click:Connect(function()
-        if (not canopen) then return end
-
+        if not canopen then return end
         canopen = false
 
-        if (open) then oldwindowdata = {}
-            for i, v in next, ScrollingFrame:GetChildren() do
-                if (not v:IsA("UIListLayout")) then
-                    oldwindowdata[v], v.Visible = v.Visible, false
+        if open then
+            for _, v in ipairs(ScrollingFrame:GetChildren()) do
+                if not v:IsA("UIListLayout") then
+                    oldData[v] = v.Visible
+                    v.Visible = false
                 end
             end
-
-            oldy = Window.AbsoluteSize.Y
+            oldY = Window.AbsoluteSize.Y
         else
-            for i,v in next, oldwindowdata do
-                i.Visible = v
+            for v, vis in pairs(oldData) do
+                v.Visible = vis
             end
         end
 
         Resize(open_close, {Rotation = open and 0 or 90}, 0.1)
-        Resize(Window, {Size = UDim2.new(0, Window.AbsoluteSize.X, 0, open and 26 or oldy)}, 0.1)
-        open_close.Parent:FindFirstChild("Base").Transparency = open and 0 or 1
+        Resize(Window, {Size = UDim2.new(0, 240, 0, open and 26 or oldY)}, 0.1)
+        Base.Transparency = open and 0 or 1
 
-        wait(0.1)
-        open, canopen = not open, true
+        task.wait(0.1)
+        open = not open
+        canopen = true
     end)
 end
 
+-- Logic
 local Functions = {}
 
 local COLORS = {
@@ -226,42 +201,36 @@ local COLORS = {
 }
 
 function Functions:Clear()
-    for _, v in next, ScrollingFrame:GetChildren() do
-        if not v:IsA("UIListLayout") then
-            v:Destroy()
+    for _, child in pairs(ScrollingFrame:GetChildren()) do
+        if not child:IsA("UIListLayout") then
+            child:Destroy()
         end
     end
 end
 
 function Functions:Add(name, needed, missing)
-    local newObject = ExampleBlock:Clone()
-    newObject.Parent = ScrollingFrame
+    local block = ExampleBlock:Clone()
+    block.Parent = ScrollingFrame
+    local btn = block.TextButton
 
-    newObject.TextButton.ImageLabel.Image = images[name]
-    newObject.TextButton.TextLabel.Text = 'Needed: ' .. (needed or 0) .. '\nMissing: ' .. (missing or 0)
+    btn.ImageLabel.Image = images[name] or ""
+    btn.TextLabel.Text = "Needed: " .. (needed or 0) .. "\nMissing: " .. (missing or 0)
 
-    local bgColor = COLORS.RED
-
+    local color = COLORS.GREEN
     if needed and needed > 0 then
-        local missingCount = missing or 0
-        local missingPercentage = missingCount / needed
-
-        if missingCount == 0 then
-            bgColor = COLORS.GREEN
-        elseif missingPercentage <= 0.5 and missingPercentage < 1 then
-            bgColor = COLORS.YELLOW
-        elseif missingPercentage > 0.5 or missingPercentage == 1 then
-            bgColor = COLORS.RED
-        end
-    else
-        bgColor = COLORS.GREEN
+        local perc = (missing or 0) / needed
+        if perc == 0 then color = COLORS.GREEN
+        elseif perc <= 0.5 then color = COLORS.YELLOW
+        else color = COLORS.RED end
     end
 
-    newObject.TextButton.ImageColor3 = bgColor
-    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, (#ScrollingFrame:GetChildren() * 40 - 35))
+    btn.ImageColor3 = color
+    btn.ImageTransparency = 0.3
+
+    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, #ScrollingFrame:GetChildren() * 40 - 35)
 end
 
-TextButton.MouseButton1Click:Connect(function()
+ClearButton.MouseButton1Click:Connect(function()
     Functions:Clear()
 end)
 
