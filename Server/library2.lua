@@ -2248,199 +2248,186 @@ local library library = {
                     return self
                 end
 
-		local UserInputService = game:GetService("UserInputService")
-		local Players = game:GetService("Players")
-		local RunService = game:GetService("RunService")
-		
-		local PlayerModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"))
-		local controls = PlayerModule:GetControls()
-		
 		function types.input(inputOptions)
-		    local self = { }
-		    self.event = event.new()
-		    self.eventBlock = false
+		    local self = { }
+		    self.event = event.new()
+		    self.eventBlock = false
 		
-		    inputOptions = settings.new({
-		        text = "New Input",
-		        placeholder = "Enter text...",
-		        color = options.color,
-		        rounding = options.rounding,
-		        clearonfocus = true,
-		        size = 150,
-		    }).handle(inputOptions)
+		    inputOptions = settings.new({
+		        text = "New Input",
+		        placeholder = "Enter text...",
+		        color = options.color,
+		        rounding = options.rounding,
+		        clearonfocus = true,
+		        size = 150,
+		    }).handle(inputOptions)
 		
-		    local input = new("Dropdown")
-		    input.Parent = items
-		    local outer = input:FindFirstChild("Outer")
-		    local inner = outer:FindFirstChild("Inner")
-		    local value = inner:FindFirstChild("Value")
-		    local text = input:FindFirstChild("Text")
+		    local input = new("Dropdown")
+		    input.Parent = items
+		    local outer = input:FindFirstChild("Outer")
+		    local inner = outer:FindFirstChild("Inner")
+		    local value = inner:FindFirstChild("Value")
+		    local text = input:FindFirstChild("Text")
 		
-		    outer.SliceScale = inputOptions.rounding / 100
-		    inner.SliceScale = inputOptions.rounding / 100
-		    inner.ImageColor3 = inputOptions.color
-		    value.Text = inputOptions.placeholder
-		    value.TextColor3 = Color3.fromRGB(178, 178, 178)
+		    outer.SliceScale = inputOptions.rounding / 100
+		    inner.SliceScale = inputOptions.rounding / 100
+		    inner.ImageColor3 = inputOptions.color
+		    value.Text = inputOptions.placeholder
+		    value.TextColor3 = Color3.fromRGB(178, 178, 178)
 		
-		    text.Text = inputOptions.text
-		    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-		    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-		    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
+		    text.Text = inputOptions.text
+		    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
+		    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+		    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
 		
-		    local inTextBox = false
-		    local textValue = ""
-		    local lastTick = tick()
-		    local lastTickN = 1
-		    local canType = false
-		    local shift = false
-		    local backspace = false
+		    local inTextBox = false
+		    local textValue = ""
+		    local lastTick = tick()
+		    local lastTickN = 1
+		    local canType = false
+		    local shift = false
+		    local backspace = false
 		
-		    -- Mouse enter/leave detection
-		    inner.MouseEnter:Connect(function()
-		        inTextBox = true
-		    end)
+		    -- Mouse enter/leave
+		    inner.MouseEnter:Connect(function()
+		        inTextBox = true
+		    end)
 		
-		    inner.MouseLeave:Connect(function()
-		        inTextBox = false
-		    end)
+		    inner.MouseLeave:Connect(function()
+		        inTextBox = false
+		    end)
 		
-		    local function updateText()
-		        if textValue == "" then
-		            value.Text = inputOptions.placeholder
-		            value.TextColor3 = Color3.fromRGB(178, 178, 178)
-		        else
-		            if canType then
-		                value.Text = textValue .. (lastTickN == 1 and "|" or "")
-		            else
-		                value.Text = textValue
-		            end
-		            value.TextColor3 = Color3.new(1, 1, 1)
-		        end
-		    end
+		    local function updateText()
+		        if textValue == "" then
+		            value.Text = inputOptions.placeholder
+		            value.TextColor3 = Color3.fromRGB(178, 178, 178)
+		        else
+		            value.Text = textValue .. (lastTickN == 1 and "|" or "")
+		            value.TextColor3 = Color3.new(1, 1, 1)
+		        end
+		    end
 		
-		    mouse.InputBegan:Connect(function()
-		        if inTextBox and findBrowseTopMost() == main then
-		            if not canType then 
-		                canType = true
-		                controls:Disable() 
-		            end
+		    mouse.InputBegan:Connect(function()
+		        if inTextBox and findBrowsingTopMost() == main then
+		            canType = true
+		            _G.isTyping = true
 		
-		            if inputOptions.clearonfocus and textValue == "" then
-		                textValue = ""
-		                updateText()
-		            end
+		            if inputOptions.clearonfocus and textValue == "" then
+		                textValue = ""
+		                updateText()
+		            end
 		
-		            spawn(function()
-		                while canType do
-		                    updateText()
-		                    if (tick() - lastTick) >= 0.5 then
-		                        lastTick = tick()
-		                        lastTickN = 1 - lastTickN
-		                    end
-		                    RunService.Heartbeat:Wait()
-		                end
-		                lastTickN = 0
-		                updateText()
-		            end)
-		        else
-		            if canType then
-		                canType = false
-		                controls:Enable()
-		                updateText()
-		            end
-		        end
-		    end)
+		            spawn(function()
+		                while canType do
+		                    updateText()
+		                    if (tick() - lastTick) >= 0.5 then
+		                        lastTick = tick()
+		                        lastTickN = 1 - lastTickN
+		                    end
+		                    RunService.Heartbeat:Wait()
+		                end
+		                lastTickN = 0
+		                updateText()
+		            end)
+		        else
+		            canType = false
+		            _G.isTyping = false
+		            updateText()
+		        end
+		    end)
 		
-		    UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
-		        if gameProcessedEvent then return end
+		    UserInputService.InputBegan:Connect(function(inputObject)
+		        local keycode = inputObject.KeyCode
 		
-		        local keycode = inputObject.KeyCode
+		        if keycode == Enum.KeyCode.LeftShift then
+		            shift = true
+		        end
 		
-		        if keycode == Enum.KeyCode.LeftShift or keycode == Enum.KeyCode.RightShift then
-		            shift = true
-		        end
+		        if canType then
+		            if keycode == Enum.KeyCode.Backspace then
+		                backspace = true
+		                textValue = textValue:sub(1, -2)
+		                updateText()
+		                self.event:Fire(textValue)
 		
-		        if canType then
-		            if keycode == Enum.KeyCode.Backspace then
-		                backspace = true
-		                textValue = textValue:sub(1, -2)
-		                updateText()
-		                self.event:Fire(textValue)
+		                local backspaceTick = tick()
+		                local backspaceN = 0.5
+		                spawn(function()
+		                    while backspace do
+		                        if (tick() - backspaceTick) >= backspaceN then
+		                            backspaceN = 0.05
+		                            backspaceTick = tick()
+		                            textValue = textValue:sub(1, -2)
+		                            updateText()
+		                            self.event:Fire(textValue)
+		                        end
+		                        RunService.Heartbeat:Wait()
+		                    end
+		                end)
+		            elseif keycode == Enum.KeyCode.Space then
+		                textValue = textValue .. " "
+		                updateText()
+		                self.event:Fire(textValue)
+		            elseif betweenOpenInterval(keycode.Value, 48, 57) then
+		                local name = rawget({
+		                    Zero = "0", One = "1", Two = "2", Three = "3",
+		                    Four = "4", Five = "5", Six = "6", Seven = "7",
+		                    Eight = "8", Nine = "9"
+		                }, keycode.Name)
+		                if shift then
+		                    name = rawget({
+		                        ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#",
+		                        ["4"] = "$", ["5"] = "%", ["6"] = "^", ["7"] = "&",
+		                        ["8"] = "*", ["9"] = "("
+		                    }, name)
+		                end
+		                textValue = textValue .. (name or "")
+		                updateText()
+		                self.event:Fire(textValue)
+		            elseif betweenOpenInterval(keycode.Value, 97, 122) then
+		                local name = (not shift) and keycode.Name:lower() or keycode.Name
+		                textValue = textValue .. name
+		                updateText()
+		                self.event:Fire(textValue)
+		            end
+		        end
+		    end)
 		
-		                local backspaceTick = tick()
-		                local backspaceN = 0.5
-		                spawn(function()
-		                    while backspace do
-		                        if (tick() - backspaceTick) >= backspaceN then
-		                            backspaceN = 0.05
-		                            backspaceTick = tick()
-		                            textValue = textValue:sub(1, -2)
-		                            updateText()
-		                            self.event:Fire(textValue)
-		                        end
-		                        RunService.Heartbeat:Wait()
-		                    end
-		                    backspaceN = 0.5
-		                end)
-		            elseif keycode == Enum.KeyCode.Space then
-		                textValue = textValue .. " "
-		                updateText()
-		                self.event:Fire(textValue)
-		            end
+		    UserInputService.InputEnded:Connect(function(inputObject)
+		        if inputObject.KeyCode == Enum.KeyCode.LeftShift then
+		            shift = false
+		        elseif inputObject.KeyCode == Enum.KeyCode.Backspace then
+		            backspace = false
+		        end
+		    end)
 		
-		            if betweenOpenInterval(keycode.Value, 48, 57) then -- 0-9
-		                local name = rawget({ Zero = "0", One = "1", Two = "2", Three = "3", Four = "4", Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9" }, keycode.Name)
-		                if shift then
-		                    name = rawget({ ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$", ["5"] = "%", ["6"] = "^", ["7"] = "&", ["8"] = "*", ["9"] = "(" }, name)
-		                end
-		                textValue = textValue .. (name or "")
-		                updateText()
-		                self.event:Fire(textValue)
-		            end
+		    function self.setText(text)
+		        textValue = text or ""
+		        updateText()
+		    end
 		
-		            if betweenOpenInterval(keycode.Value, 97, 122) then -- A-Z
-		                local name = (not shift) and keycode.Name:lower() or keycode.Name
-		                textValue = textValue .. name
-		                updateText()
-		                self.event:Fire(textValue)
-		            end
-		        end
-		    end)
+		    function self.getText()
+		        return textValue
+		    end
 		
-		    UserInputService.InputEnded:Connect(function(inputObject)
-		        if inputObject.KeyCode == Enum.KeyCode.LeftShift or inputObject.KeyCode == Enum.KeyCode.RightShift then
-		            shift = false
-		        elseif inputObject.KeyCode == Enum.KeyCode.Backspace then
-		            backspace = false
-		        end
-		    end)
+		    function self.setColor(color)
+		        inner.ImageColor3 = color
+		    end
 		
-		    function self.setText(text)
-		        textValue = text or ""
-		        updateText()
-		    end
+		    function self.getColor()
+		        return inner.ImageColor3
+		    end
 		
-		    function self.getText()
-		        return textValue
-		    end
+		    function self:Destroy()
+		        _G.isTyping = false
+		        input:Destroy()
+		    end
 		
-		    function self.setColor(color)
-		        inner.ImageColor3 = color
-		    end
-		
-		    function self.getColor()
-		        return inner.ImageColor3
-		    end
-		
-		    function self:Destroy()
-		        controls:Enable()
-		        input:Destroy()
-		    end
-		
-		    self.options = inputOptions
-		    self.self = input
-		    return self
+		    self.options = inputOptions
+		    self.self = input
+		    return self
 		end
+
 
                 function types.dock(dockOptions)
                     local self = { }
