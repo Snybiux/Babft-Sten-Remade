@@ -2332,6 +2332,7 @@ local library library = {
 		    mouse.InputBegan:Connect(function()
 		        if inTextBox and findBrowsingTopMost() == main then
 			    textValue = " "
+			    updateText()
 		            if not canType then
 		                canType = true
 		                disableMovement()
