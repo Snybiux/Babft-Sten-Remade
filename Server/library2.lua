@@ -1,4 +1,4 @@
-print("Loading new Ui Library")
+print("Loading new Ui Library.")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2318,13 +2318,12 @@ local library library = {
 		
 		    mouse.InputBegan:Connect(function()
 		        if inTextBox and findBrowsingTopMost() == main then
-			    textValue = ""
-			    updateText()
 		            if not canType then
 		                canType = true
 		                disableMovement()
 		                if inputOptions.clearonfocus then
-
+					textValue = ""
+			    		updateText()
 		                end
 		
 		                spawn(function()
