@@ -1068,13 +1068,6 @@ do -- Load items
     Inner_3.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_3.SliceScale = 0.050
 
-    ImageLabel_8.Parent = Inner_3
-    ImageLabel_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageLabel_8.BackgroundTransparency = 1.000
-    ImageLabel_8.Position = UDim2.new(1, -26, 1, -16)
-    ImageLabel_8.Size = UDim2.new(0, 16, 0, 16)
-    ImageLabel_8.Image = "rbxassetid://11145100810"
-
     Value_2.Name = "Value"
     Value_2.Parent = Inner_3
     Value_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
