@@ -2,10 +2,14 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 
--- Colors
 local MAIN_COLOR = Color3.fromRGB(41, 74, 122)
 local BACKGROUND_COLOR = Color3.fromRGB(21, 22, 23)
 local TEXT_COLOR = Color3.fromRGB(255, 255, 255)
+
+do
+	local MainPart = game:GetService("CoreGui"):FindFirstChild("MainPart")
+	if MainPart then MainPart:Destroy() end
+end
 
 local MainPart = Instance.new("ScreenGui", CoreGui)
 MainPart.Name = "MainPart"
