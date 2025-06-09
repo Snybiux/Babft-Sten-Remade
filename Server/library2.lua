@@ -1,3 +1,4 @@
+print("Loading new Ui Library")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2306,7 +2307,7 @@ local library library = {
 		    end)
 		
 		    local function updateText()
-		        if textValue == "" then
+		        if textValue == " " then
 		            value.Text = inputOptions.placeholder
 		            value.TextColor3 = Color3.fromRGB(178, 178, 178)
 		        else
@@ -2317,7 +2318,7 @@ local library library = {
 		
 		    mouse.InputBegan:Connect(function()
 		        if inTextBox and findBrowsingTopMost() == main then
-			    textValue = " "
+			    textValue = ""
 			    updateText()
 		            if not canType then
 		                canType = true
