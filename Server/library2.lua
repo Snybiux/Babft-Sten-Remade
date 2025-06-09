@@ -835,13 +835,6 @@ do -- Load items
     Inner_2.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_2.SliceScale = 0.050
 
-    ImageLabel_7.Parent = Inner_2
-    ImageLabel_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageLabel_7.BackgroundTransparency = 1.000
-    ImageLabel_7.Position = UDim2.new(0, 5, 1, -16)
-    ImageLabel_7.Size = UDim2.new(0, 16, 0, 16)
-    ImageLabel_7.Image = "rbxassetid://11146003594"
-
     TextBox.Name = "TextBox"
     TextBox.Parent = Inner_2
     TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
