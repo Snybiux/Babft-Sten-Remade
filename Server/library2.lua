@@ -2337,8 +2337,7 @@ local library library = {
 		                canType = true
 		                disableMovement()
 		                if inputOptions.clearonfocus then
-		                    textValue = " "          -- Placeholder sofort weg beim Klick
-		                    updateText()
+
 		                end
 		
 		                spawn(function()
