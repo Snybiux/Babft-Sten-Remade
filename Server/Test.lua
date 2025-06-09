@@ -1,3 +1,17 @@
+local input = tab:new("input", {
+    text = "Username",
+    placeholder = "Enter your username...",
+    size = 200
+})
+
+input.event:Connect(function(text)
+    print("Text changed to:", text)
+end)
+
+input:setText("Player1")
+
+local current = input:getText()
+
 
 function types.input(inputOptions)
     local self = { }
