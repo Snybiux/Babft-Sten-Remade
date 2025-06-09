@@ -1,4 +1,3 @@
-print("Loading new Ui Library.")
 --[[
 	rbimgui-2
 	version 1.2
