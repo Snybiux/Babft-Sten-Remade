@@ -2293,8 +2293,7 @@ local library library = {
 		    local shift = false
 		    local backspace = false
 		
-		    -- Bewegungsblocker
-		    local function blockMovement(actionName, inputState)
+		    local function blockMovement()
 		        return Enum.ContextActionResult.Sink
 		    end
 		
@@ -2353,9 +2352,13 @@ local library library = {
 		                updateText()
 		            end)
 		        else
-		            canType = false
-		            enableMovement()
-		            updateText()
+		            -- Fokusverlust: automatisch speichern & beenden
+		            if canType then
+		                canType = false
+		                self.event:Fire(textValue)
+		                enableMovement()
+		                updateText()
+		            end
 		        end
 		    end)
 		
@@ -2367,6 +2370,14 @@ local library library = {
 		        end
 		
 		        if canType then
+		            if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
+		                canType = false
+		                self.event:Fire(textValue)
+		                enableMovement()
+		                updateText()
+		                return
+		            end
+		
 		            if keycode == Enum.KeyCode.Backspace then
 		                backspace = true
 		                textValue = textValue:sub(1, -2)
