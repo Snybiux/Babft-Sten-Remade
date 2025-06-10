@@ -11,7 +11,7 @@ local ui_options = {
 	can_resize = true,
 }
 
-local UITransparency = 0.1
+local UITransparency = 0.08
 
 do
 	local imgui = game:GetService("CoreGui"):FindFirstChild("imgui")
