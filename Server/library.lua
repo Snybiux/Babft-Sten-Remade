@@ -427,6 +427,7 @@ Folder.Position = UDim2.new(0, 0, 0, 50)
 Folder.Size = UDim2.new(1, 0, 0, 20)
 Folder.Image = "rbxassetid://2851929490"
 Folder.ImageColor3 = Color3.new(0.0823529, 0.0862745, 0.0901961)
+Folder.ImageTransparency = 1
 Folder.ScaleType = Enum.ScaleType.Slice
 Folder.SliceCenter = Rect.new(4, 4, 4, 4)
 
