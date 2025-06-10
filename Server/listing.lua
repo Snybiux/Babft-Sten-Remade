@@ -72,7 +72,7 @@ Title.Position = UDim2.new(0, 30, 0, 3)
 Title.Size = UDim2.new(0, 200, 0, 20)
 Title.BackgroundTransparency = 1
 Title.Text = "Block Listing"
-Title.Font = Enum.Font.Code
+Title.Font = Enum.Font.GothamBold
 Title.TextColor3 = TEXT_COLOR
 Title.TextSize = 14
 Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -100,7 +100,7 @@ ClearButton.Name = "Clear"
 ClearButton.Size = UDim2.new(0, 60, 0, 20)
 ClearButton.Position = UDim2.new(1, -64, 0, -1)
 ClearButton.BackgroundColor3 = Color3.fromRGB(230, 0, 0)
-ClearButton.Font = Enum.Font.Code
+ClearButton.Font = Enum.Font.GothamBold
 ClearButton.Text = "Clear"
 ClearButton.TextColor3 = TEXT_COLOR
 ClearButton.TextSize = 13
@@ -137,7 +137,7 @@ local BlockText = Instance.new("TextLabel", BlockBG)
 BlockText.Size = UDim2.new(1, -50, 1, 0)
 BlockText.Position = UDim2.new(0, 50, 0, 0)
 BlockText.Text = "Needed: 1\nMissing: 0"
-BlockText.Font = Enum.Font.Code
+BlockText.Font = Enum.Font.GothamBold
 BlockText.TextColor3 = TEXT_COLOR
 BlockText.TextSize = 14
 BlockText.TextXAlignment = Enum.TextXAlignment.Left
@@ -218,7 +218,7 @@ function Functions:Add(name, needed, missing)
     local btn = block.TextButton
 
     btn.ImageLabel.Image = images[name] or ""
-    btn.TextLabel.Text = "Needed: " .. (needed or 0) .. "\nMissing: " .. (missing or 0)
+    btn.TextLabel.Text = "Needed:  " .. (needed or 0) .. "\nMissing: " .. (missing or 0)
 
     local color = COLORS.GREEN
     if needed and needed > 0 then
