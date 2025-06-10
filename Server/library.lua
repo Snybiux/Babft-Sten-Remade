@@ -772,6 +772,7 @@ Keybind.BackgroundTransparency = 1
 Keybind.Size = UDim2.new(0, 200, 0, 20)
 Keybind.Image = "rbxassetid://2851929490"
 Keybind.ImageColor3 = Color3.new(0.203922, 0.207843, 0.219608)
+Keybind.ImageTransparency = UITransparency
 Keybind.ScaleType = Enum.ScaleType.Slice
 Keybind.SliceCenter = Rect.new(4, 4, 4, 4)
 
