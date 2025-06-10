@@ -11,6 +11,8 @@ local ui_options = {
 	can_resize = true,
 }
 
+local UITransparency = 0.15
+
 do
 	local imgui = game:GetService("CoreGui"):FindFirstChild("imgui")
 	if imgui then imgui:Destroy() end
@@ -105,6 +107,7 @@ Label.BackgroundTransparency = 1
 Label.Size = UDim2.new(0, 200, 0, 20)
 Label.Font = Enum.Font.GothamSemibold
 Label.Text = "Hello, world 123"
+Label.TextTransparency = 0.15
 Label.TextColor3 = Color3.new(1, 1, 1)
 Label.TextSize = 14
 Label.TextXAlignment = Enum.TextXAlignment.Left
@@ -120,6 +123,7 @@ Window.Selectable = true
 Window.Size = UDim2.new(0, 200, 0, 200)
 Window.Image = "rbxassetid://2851926732"
 Window.ImageColor3 = Color3.new(0.0823529, 0.0862745, 0.0901961)
+Window.ImageTransparency = UITransparency
 Window.ScaleType = Enum.ScaleType.Slice
 Window.SliceCenter = Rect.new(12, 12, 12, 12)
 
@@ -251,6 +255,7 @@ TextBox_Roundify_4px.BackgroundTransparency = 1
 TextBox_Roundify_4px.Size = UDim2.new(1, 0, 1, 0)
 TextBox_Roundify_4px.Image = "rbxassetid://2851929490"
 TextBox_Roundify_4px.ImageColor3 = Color3.new(0.203922, 0.207843, 0.219608)
+TextBox_Roundify_4px.ImageTransparency = UITransparency
 TextBox_Roundify_4px.ScaleType = Enum.ScaleType.Slice
 TextBox_Roundify_4px.SliceCenter = Rect.new(4, 4, 4, 4)
 
@@ -363,6 +368,7 @@ Box.Size = UDim2.new(1, 0, 0, 150)
 Box.ZIndex = 3
 Box.Image = "rbxassetid://2851929490"
 Box.ImageColor3 = Color3.new(0.129412, 0.133333, 0.141176)
+Box.ImageTransparency = UITransparency
 Box.ScaleType = Enum.ScaleType.Slice
 Box.SliceCenter = Rect.new(4, 4, 4, 4)
 
@@ -386,6 +392,7 @@ TextButton_Roundify_4px.BackgroundTransparency = 1
 TextButton_Roundify_4px.Size = UDim2.new(1, 0, 1, 0)
 TextButton_Roundify_4px.Image = "rbxassetid://2851929490"
 TextButton_Roundify_4px.ImageColor3 = Color3.new(0.203922, 0.207843, 0.219608)
+TextButton_Roundify_4px.ImageTransparency = UITransparency
 TextButton_Roundify_4px.ScaleType = Enum.ScaleType.Slice
 TextButton_Roundify_4px.SliceCenter = Rect.new(4, 4, 4, 4)
 
@@ -443,6 +450,7 @@ TextButton_Roundify_4px_3.BackgroundTransparency = 1
 TextButton_Roundify_4px_3.Size = UDim2.new(1, 0, 1, 0)
 TextButton_Roundify_4px_3.Image = "rbxassetid://2851929490"
 TextButton_Roundify_4px_3.ImageColor3 = Color3.new(0.160784, 0.290196, 0.478431)
+TextButton_Roundify_4px_3.ImageTransparency = UITransparency
 TextButton_Roundify_4px_3.ScaleType = Enum.ScaleType.Slice
 TextButton_Roundify_4px_3.SliceCenter = Rect.new(4, 4, 4, 4)
 
@@ -707,7 +715,7 @@ TextButton_Roundify_4px_4.BackgroundTransparency = 1
 TextButton_Roundify_4px_4.Size = UDim2.new(1, 0, 1, 0)
 TextButton_Roundify_4px_4.Image = "rbxassetid://2851929490"
 TextButton_Roundify_4px_4.ImageColor3 = Color3.new(0.160784, 0.290196, 0.478431)
-TextButton_Roundify_4px_4.ImageTransparency = 0.5
+TextButton_Roundify_4px_4.ImageTransparency = 0.15
 TextButton_Roundify_4px_4.ScaleType = Enum.ScaleType.Slice
 TextButton_Roundify_4px_4.SliceCenter = Rect.new(4, 4, 4, 4)
 
