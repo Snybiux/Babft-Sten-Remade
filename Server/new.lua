@@ -1,3 +1,4 @@
+print("WWW")
 --[[
 	rbimgui-2
 	version 1.2
