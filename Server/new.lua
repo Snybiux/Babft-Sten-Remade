@@ -1,4 +1,4 @@
-print("WWW2")
+print("WWW3")
 --[[
 	rbimgui-2
 	version 1.2
@@ -831,7 +831,7 @@ do -- Load items
     Inner_2.Position = UDim2.new(0, 2, 0, 2)
     Inner_2.Size = UDim2.new(1, -4, 1, -4)
     Inner_2.Image = "rbxassetid://3570695787"
-    Inner_2.ImageColor3 = Color3.fromRGB(32, 59, 97)
+    Inner_2.ImageColor3 = Color3.fromRGB(41, 74, 122)
     Inner_2.ScaleType = Enum.ScaleType.Slice
     Inner_2.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_2.SliceScale = 0.050
@@ -1975,9 +1975,9 @@ local library library = {
                     dropdownOptions = settings.new({
                         text = "New Dropdown",
                         size = 150,
-                        color = Color3.fromRGB(32, 59, 97),
+                        color = Color3.fromRGB(41, 74, 122),
                         rounding = options.rounding,
-                        selectioncolor = Color3.fromRGB(32, 59, 97),
+                        selectioncolor = Color3.fromRGB(41, 74, 122),
                     }).handle(dropdownOptions)
 
                     local dropdownButton = new("Dropdown")
@@ -2725,3 +2725,4 @@ do -- window history zindex
 end
 
 return library
+
