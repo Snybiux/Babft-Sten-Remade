@@ -1,4 +1,4 @@
-print("WWW4")
+print("WWW12")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2001,6 +2001,7 @@ local library library = {
                     text.Position = UDim2.new(0, dropdownOptions.size + 8, 0, 0)
 
                     inner.MouseButton1Click:Connect(function()
+                        print("zuf")
                         self.visible = not self.visible
                         dropdownWindow.Visible = self.visible
                         if self.visible then
@@ -2022,6 +2023,7 @@ local library library = {
 
                     local dropdownCache = { }
                     function self.close()
+                        print("wdd")
                         if not self.isopen then return end
                         self.isopen = false
 
@@ -2032,6 +2034,7 @@ local library library = {
                     end
 
                     function self.open()
+                        print("WUU")
                         if self.isopen then return end
                         self.isopen = true
 
