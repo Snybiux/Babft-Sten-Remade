@@ -1,4 +1,4 @@
-print("WWW3")
+print("WWW4")
 --[[
 	rbimgui-2
 	version 1.2
@@ -1993,7 +1993,7 @@ local library library = {
                     inner.ImageColor3 = dropdownOptions.color
                     outer.SliceScale = dropdownOptions.rounding / 100
                     inner.SliceScale = dropdownOptions.rounding / 100
-                    inner:FindFirstChild("Value").Text = "[...]"
+                    inner:FindFirstChild("Value").Text = "[Selecte...]"
 
                     text.Text = dropdownOptions.text
                     dropdownWindow:FindFirstChild("Title").Text = dropdownOptions.text
@@ -2013,8 +2013,10 @@ local library library = {
                     dropdownWindow:FindFirstChild("Expand").MouseButton1Click:Connect(function()
                         if self.isopen then
                             self.close()
+                            print("TT")
                         else
                             self.open()
+                            print("TTT")
                         end
                     end)
 
@@ -2082,6 +2084,7 @@ local library library = {
                         end)
 
                         function dropdownObject.Select()
+                            print("New Selected")
                             self.selected = name
                             for i, v in next, dropdownObjects do
                                 v.selected = false
@@ -2725,4 +2728,3 @@ do -- window history zindex
 end
 
 return library
-
