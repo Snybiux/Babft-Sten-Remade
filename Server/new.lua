@@ -1,4 +1,4 @@
-print("WWW12")
+print("WWW33")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2088,6 +2088,13 @@ local library library = {
 
                         function dropdownObject.Select()
                             print("New Selected")
+                            self.visible = not self.visible
+                            dropdownWindow.Visible = self.visible
+                            if self.visible then
+                                dropdownWindow.Position = UDim2.new(0, dropdownButton.AbsolutePosition.X + dropdownButton.AbsoluteSize.X, 0, dropdownButton.AbsolutePosition.Y)
+                                self.open()
+                                setTopMost(dropdownWindow)
+                            end
                             self.selected = name
                             for i, v in next, dropdownObjects do
                                 v.selected = false
