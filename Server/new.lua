@@ -2093,6 +2093,7 @@ local library library = {
                             resize(dropdownOption:GetChildren()[1], { ImageColor3 = dropdownOptions.selectioncolor }, 0.1)
                             inner:FindFirstChild("Value").Text = string.format("[ %s ]", name)
                             dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = string.format("[ %s ]", name)
+                            self.close()
                             if not self.eventBlock then
                                 self.event:Fire(name)
                             end
