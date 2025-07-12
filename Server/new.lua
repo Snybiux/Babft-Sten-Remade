@@ -1,4 +1,4 @@
-print("WWW3ffffffff")
+print("WWW3")
 --[[
 	rbimgui-2
 	version 1.2
@@ -1975,9 +1975,9 @@ local library library = {
                     dropdownOptions = settings.new({
                         text = "New Dropdown",
                         size = 150,
-                        color = Color3.fromRGB(41, 74, 122),
+                        color = Color3.fromRGB(32, 59, 97),
                         rounding = options.rounding,
-                        selectioncolor = Color3.fromRGB(41, 74, 122),
+                        selectioncolor = Color3.fromRGB(32, 59, 97),
                     }).handle(dropdownOptions)
 
                     local dropdownButton = new("Dropdown")
@@ -1993,7 +1993,7 @@ local library library = {
                     inner.ImageColor3 = dropdownOptions.color
                     outer.SliceScale = dropdownOptions.rounding / 100
                     inner.SliceScale = dropdownOptions.rounding / 100
-                    inner:FindFirstChild("Value").Text = "[Selecte...]"
+                    inner:FindFirstChild("Value").Text = "[...]"
 
                     text.Text = dropdownOptions.text
                     dropdownWindow:FindFirstChild("Title").Text = dropdownOptions.text
@@ -2001,24 +2001,25 @@ local library library = {
                     text.Position = UDim2.new(0, dropdownOptions.size + 8, 0, 0)
 
                     inner.MouseButton1Click:Connect(function()
-                        print("zuf")
                         self.visible = not self.visible
                         dropdownWindow.Visible = self.visible
+                        if self.visible then
+                            dropdownWindow.Position = UDim2.new(0, dropdownButton.AbsolutePosition.X + dropdownButton.AbsoluteSize.X, 0, dropdownButton.AbsolutePosition.Y)
+                            self.open()
+                            setTopMost(dropdownWindow)
+                        end
                     end)
 
                     dropdownWindow:FindFirstChild("Expand").MouseButton1Click:Connect(function()
                         if self.isopen then
                             self.close()
-                            print("TT")
                         else
                             self.open()
-                            print("TTT")
                         end
                     end)
 
                     local dropdownCache = { }
                     function self.close()
-                        print("wdd")
                         if not self.isopen then return end
                         self.isopen = false
 
@@ -2029,7 +2030,6 @@ local library library = {
                     end
 
                     function self.open()
-                        print("WUU")
                         if self.isopen then return end
                         self.isopen = true
 
@@ -2082,7 +2082,6 @@ local library library = {
                         end)
 
                         function dropdownObject.Select()
-                            print("New Selected")
                             self.selected = name
                             for i, v in next, dropdownObjects do
                                 v.selected = false
@@ -2109,15 +2108,6 @@ local library library = {
                         end
 
                         return dropdownObject
-                    end
-
-                    function self.search(key)
-                        for name, dropdownObject in next, dropdownObjects do
-                            dropdownObject.object.Parent = dropdownWindow:FindFirstChild("Cache")
-                            if dropdownObject.name:match(key) then
-                                dropdownObject.object.Parent = dropdownItems
-                            end
-                        end
                     end
 
                     do -- search bar
