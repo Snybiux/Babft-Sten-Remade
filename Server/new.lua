@@ -1,4 +1,4 @@
-print("WWW33")
+print("WWW3rr")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2004,11 +2004,6 @@ local library library = {
                         print("zuf")
                         self.visible = not self.visible
                         dropdownWindow.Visible = self.visible
-                        if self.visible then
-                            dropdownWindow.Position = UDim2.new(0, dropdownButton.AbsolutePosition.X + dropdownButton.AbsoluteSize.X, 0, dropdownButton.AbsolutePosition.Y)
-                            self.open()
-                            setTopMost(dropdownWindow)
-                        end
                     end)
 
                     dropdownWindow:FindFirstChild("Expand").MouseButton1Click:Connect(function()
@@ -2087,14 +2082,12 @@ local library library = {
                         end)
 
                         function dropdownObject.Select()
-                            print("New Selected")
-                            self.visible = not self.visible
-                            dropdownWindow.Visible = self.visible
                             if self.visible then
                                 dropdownWindow.Position = UDim2.new(0, dropdownButton.AbsolutePosition.X + dropdownButton.AbsoluteSize.X, 0, dropdownButton.AbsolutePosition.Y)
                                 self.open()
                                 setTopMost(dropdownWindow)
                             end
+                            print("New Selected")
                             self.selected = name
                             for i, v in next, dropdownObjects do
                                 v.selected = false
