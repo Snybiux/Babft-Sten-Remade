@@ -1,4 +1,4 @@
-print("WWW3ddfv")
+print("WWW3ffffffff")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2082,9 +2082,6 @@ local library library = {
                         end)
 
                         function dropdownObject.Select()
-                            if self.visible then
-                                self.close()
-                            end
                             print("New Selected")
                             self.selected = name
                             for i, v in next, dropdownObjects do
