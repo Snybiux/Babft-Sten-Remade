@@ -1,4 +1,4 @@
-print("WWW3rr")
+print("WWW3ddfv")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2083,9 +2083,7 @@ local library library = {
 
                         function dropdownObject.Select()
                             if self.visible then
-                                dropdownWindow.Position = UDim2.new(0, dropdownButton.AbsolutePosition.X + dropdownButton.AbsoluteSize.X, 0, dropdownButton.AbsolutePosition.Y)
-                                self.open()
-                                setTopMost(dropdownWindow)
+                                self.close()
                             end
                             print("New Selected")
                             self.selected = name
