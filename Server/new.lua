@@ -1,4 +1,4 @@
-print("WWW345")
+print("WWW3345678")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2093,7 +2093,11 @@ local library library = {
                             resize(dropdownOption:GetChildren()[1], { ImageColor3 = dropdownOptions.selectioncolor }, 0.1)
                             inner:FindFirstChild("Value").Text = string.format("[ %s ]", name)
                             dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = string.format("[ %s ]", name)
-                            self.close()
+                            if self.isopen then
+                                self.close()
+                            else
+                                self.open()
+                            end
                             if not self.eventBlock then
                                 self.event:Fire(name)
                             end
