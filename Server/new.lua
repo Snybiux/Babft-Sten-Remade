@@ -1992,7 +1992,7 @@ local library library = {
                     inner.ImageColor3 = dropdownOptions.color
                     outer.SliceScale = dropdownOptions.rounding / 100
                     inner.SliceScale = dropdownOptions.rounding / 100
-                    inner:FindFirstChild("Value").Text = "[...]"
+                    inner:FindFirstChild("Value").Text = "[Selecte...]"
 
                     text.Text = dropdownOptions.text
                     dropdownWindow:FindFirstChild("Title").Text = dropdownOptions.text
