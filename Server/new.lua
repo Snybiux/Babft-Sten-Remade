@@ -1,4 +1,3 @@
-print("WWdW3")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2093,8 +2092,6 @@ local library library = {
                             resize(dropdownOption:GetChildren()[1], { ImageColor3 = dropdownOptions.selectioncolor }, 0.1)
                             inner:FindFirstChild("Value").Text = string.format("[ %s ]", name)
                             dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = string.format("[ %s ]", name)
-                            self.visible = not self.visible
-                            dropdownWindow.Visible = self.visible
                             if not self.eventBlock then
                                 self.event:Fire(name)
                             end
@@ -2102,8 +2099,8 @@ local library library = {
 
                         function dropdownObject.Destroy()
                             if rawget(dropdownObject, name) then
-                                inner:FindFirstChild("Value").Text = "[...]"
-                                dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = "[...]"
+                                inner:FindFirstChild("Value").Text = "[Selecte...]"
+                                dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = "[Selecte...]"
                             end
                             self.selected = nil
                             rawset(dropdownObject, name, nil)
