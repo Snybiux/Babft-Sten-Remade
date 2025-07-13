@@ -177,7 +177,7 @@ do -- Load items
     Title.BackgroundTransparency = 1.000
     Title.Position = UDim2.new(0, 30, 0, 0)
     Title.Size = UDim2.new(1, -30, 1, 0)
-    Title.Font = Enum.Font.Gothambold
+    Title.Font = Enum.Font.GothamBold
     Title.Text = "Folder"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 14.000
@@ -297,7 +297,7 @@ do -- Load items
     Title_2.Position = UDim2.new(0, 30, 0, 0)
     Title_2.Size = UDim2.new(1, -30, 1, 0)
     Title_2.ZIndex = 4
-    Title_2.Font = Enum.Font.Gothambold
+    Title_2.Font = Enum.Font.GothamBold
     Title_2.Text = "ImGui Demo"
     Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_2.TextSize = 16.000
