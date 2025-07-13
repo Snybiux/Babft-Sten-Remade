@@ -128,7 +128,7 @@ do -- Load items
     Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Label.BackgroundTransparency = 1.000
     Label.Size = UDim2.new(0, 91, 0, 15)
-    Label.Font = Enum.Font.Gotham
+    Label.Font = Enum.Font.GothamSemibold
     Label.Text = "Hello, World!"
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.TextSize = 14.000
@@ -139,7 +139,7 @@ do -- Load items
     TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TabButton.BackgroundTransparency = 1.000
     TabButton.Size = UDim2.new(0, 32, 1, 0)
-    TabButton.Font = Enum.Font.Gotham
+    TabButton.Font = Enum.Font.GothamSemibold
     TabButton.Text = "Menu"
     TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     TabButton.TextSize = 16.000
@@ -177,7 +177,7 @@ do -- Load items
     Title.BackgroundTransparency = 1.000
     Title.Position = UDim2.new(0, 30, 0, 0)
     Title.Size = UDim2.new(1, -30, 1, 0)
-    Title.Font = Enum.Font.Gotham
+    Title.Font = Enum.Font.GothamSemibold
     Title.Text = "Folder"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 14.000
@@ -297,7 +297,7 @@ do -- Load items
     Title_2.Position = UDim2.new(0, 30, 0, 0)
     Title_2.Size = UDim2.new(1, -30, 1, 0)
     Title_2.ZIndex = 4
-    Title_2.Font = Enum.Font.Gotham
+    Title_2.Font = Enum.Font.GothamSemibold
     Title_2.Text = "ImGui Demo"
     Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_2.TextSize = 16.000
@@ -383,7 +383,7 @@ do -- Load items
     Button.BorderSizePixel = 0
     Button.Size = UDim2.new(0, 20, 0, 20)
     Button.ZIndex = 3
-    Button.Font = Enum.Font.Gotham
+    Button.Font = Enum.Font.GothamSemibold
     Button.Text = ""
     Button.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button.TextSize = 14.000
@@ -433,7 +433,7 @@ do -- Load items
     Text.BackgroundTransparency = 1.000
     Text.Position = UDim2.new(0, 28, 0, 0)
     Text.Size = UDim2.new(0, 42, 1, 0)
-    Text.Font = Enum.Font.Gotham
+    Text.Font = Enum.Font.GothamSemibold
     Text.Text = "Switch"
     Text.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text.TextSize = 14.000
@@ -480,7 +480,7 @@ do -- Load items
     Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Value.BackgroundTransparency = 1.000
     Value.Size = UDim2.new(1, 0, 1, 0)
-    Value.Font = Enum.Font.Gotham
+    Value.Font = Enum.Font.GothamSemibold
     Value.Text = "6.00"
     Value.TextColor3 = Color3.fromRGB(255, 255, 255)
     Value.TextSize = 14.000
@@ -491,7 +491,7 @@ do -- Load items
     Text_2.BackgroundTransparency = 1.000
     Text_2.Position = UDim2.new(0, 158, 0, 0)
     Text_2.Size = UDim2.new(0, 42, 1, 0)
-    Text_2.Font = Enum.Font.Gotham
+    Text_2.Font = Enum.Font.GothamSemibold
     Text_2.Text = "Slider"
     Text_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_2.TextSize = 14.000
@@ -504,7 +504,7 @@ do -- Load items
     Button_2.BorderSizePixel = 0
     Button_2.Size = UDim2.new(0, 72, 0, 20)
     Button_2.ZIndex = 3
-    Button_2.Font = Enum.Font.Gotham
+    Button_2.Font = Enum.Font.GothamSemibold
     Button_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button_2.TextSize = 14.000
 
@@ -628,7 +628,7 @@ do -- Load items
     Button_3.BorderSizePixel = 0
     Button_3.Size = UDim2.new(0, 20, 0, 20)
     Button_3.ZIndex = 3
-    Button_3.Font = Enum.Font.Gotham
+    Button_3.Font = Enum.Font.GothamSemibold
     Button_3.Text = ""
     Button_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button_3.TextSize = 14.000
@@ -677,7 +677,7 @@ do -- Load items
     Text_3.BackgroundTransparency = 1.000
     Text_3.Position = UDim2.new(0, 28, 0, 0)
     Text_3.Size = UDim2.new(0, 84, 1, 0)
-    Text_3.Font = Enum.Font.Gotham
+    Text_3.Font = Enum.Font.GothamSemibold
     Text_3.Text = "Color Picker"
     Text_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_3.TextSize = 14.000
@@ -690,7 +690,7 @@ do -- Load items
     DropdownOption.BorderSizePixel = 0
     DropdownOption.Size = UDim2.new(1, 0, 0, 20)
     DropdownOption.ZIndex = 3
-    DropdownOption.Font = Enum.Font.Gotham
+    DropdownOption.Font = Enum.Font.GothamSemibold
     DropdownOption.Text = "  Option"
     DropdownOption.TextColor3 = Color3.fromRGB(255, 255, 255)
     DropdownOption.TextSize = 14.000
@@ -745,7 +745,7 @@ do -- Load items
     Title_3.Position = UDim2.new(0, 30, 0, 0)
     Title_3.Size = UDim2.new(1, -30, 1, 0)
     Title_3.ZIndex = 4
-    Title_3.Font = Enum.Font.Gotham
+    Title_3.Font = Enum.Font.GothamSemibold
     Title_3.Text = "Dropdown"
     Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_3.TextSize = 16.000
@@ -854,7 +854,7 @@ do -- Load items
     Selected.BackgroundTransparency = 1.000
     Selected.Position = UDim2.new(0, 10, 1, -30)
     Selected.Size = UDim2.new(1, -10, 0, 30)
-    Selected.Font = Enum.Font.Gotham
+    Selected.Font = Enum.Font.GothamSemibold
     Selected.Text = "Selected: [...]"
     Selected.TextColor3 = Color3.fromRGB(178, 178, 178)
     Selected.TextSize = 12.000
@@ -910,7 +910,7 @@ do -- Load items
     Title_4.Position = UDim2.new(0, 30, 0, 0)
     Title_4.Size = UDim2.new(1, -30, 1, 0)
     Title_4.ZIndex = 4
-    Title_4.Font = Enum.Font.Gotham
+    Title_4.Font = Enum.Font.GothamSemibold
     Title_4.Text = "Color Picker"
     Title_4.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_4.TextSize = 16.000
@@ -1034,7 +1034,7 @@ do -- Load items
     TextLabel.BackgroundTransparency = 1.000
     TextLabel.Position = UDim2.new(0, 10, 1, -35)
     TextLabel.Size = UDim2.new(1, -10, 0, 35)
-    TextLabel.Font = Enum.Font.Gotham
+    TextLabel.Font = Enum.Font.GothamSemibold
     TextLabel.Text = "Selected:"
     TextLabel.TextColor3 = Color3.fromRGB(178, 178, 178)
     TextLabel.TextSize = 12.000
@@ -1075,7 +1075,7 @@ do -- Load items
     Value_2.BackgroundTransparency = 1.000
     Value_2.Position = UDim2.new(0, 10, 0, 0)
     Value_2.Size = UDim2.new(1, -10, 1, 0)
-    Value_2.Font = Enum.Font.Gotham
+    Value_2.Font = Enum.Font.GothamSemibold
     Value_2.Text = "Selected"
     Value_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Value_2.TextSize = 14.000
@@ -1087,7 +1087,7 @@ do -- Load items
     Text_4.BackgroundTransparency = 1.000
     Text_4.Position = UDim2.new(0, 158, 0, 0)
     Text_4.Size = UDim2.new(0, 56, 1, 0)
-    Text_4.Font = Enum.Font.Gotham
+    Text_4.Font = Enum.Font.GothamSemibold
     Text_4.Text = "Dropdown"
     Text_4.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_4.TextSize = 14.000
