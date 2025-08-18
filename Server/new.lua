@@ -1,4 +1,4 @@
-print("Test12343")
+print("Test")
 --[[
 	rbimgui-2
 	version 1.2
