@@ -2876,4 +2876,4 @@ end
 
 return library
 
-typeOptions
+
