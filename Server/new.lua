@@ -1,4 +1,3 @@
-
 --[[
 	rbimgui-2
 	version 1.2
@@ -128,7 +127,7 @@ do -- Load items
     Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Label.BackgroundTransparency = 1.000
     Label.Size = UDim2.new(0, 91, 0, 15)
-    Label.Font = Enum.Font.GothamSemibold
+    Label.Font = Enum.Font.Code
     Label.Text = "Hello, World!"
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.TextSize = 14.000
@@ -139,7 +138,7 @@ do -- Load items
     TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TabButton.BackgroundTransparency = 1.000
     TabButton.Size = UDim2.new(0, 32, 1, 0)
-    TabButton.Font = Enum.Font.GothamSemibold
+    TabButton.Font = Enum.Font.Code
     TabButton.Text = "Menu"
     TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     TabButton.TextSize = 16.000
@@ -177,7 +176,7 @@ do -- Load items
     Title.BackgroundTransparency = 1.000
     Title.Position = UDim2.new(0, 30, 0, 0)
     Title.Size = UDim2.new(1, -30, 1, 0)
-    Title.Font = Enum.Font.GothamSemibold
+    Title.Font = Enum.Font.Code
     Title.Text = "Folder"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 14.000
@@ -297,7 +296,7 @@ do -- Load items
     Title_2.Position = UDim2.new(0, 30, 0, 0)
     Title_2.Size = UDim2.new(1, -30, 1, 0)
     Title_2.ZIndex = 4
-    Title_2.Font = Enum.Font.GothamSemibold
+    Title_2.Font = Enum.Font.Code
     Title_2.Text = "ImGui Demo"
     Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_2.TextSize = 16.000
@@ -383,7 +382,7 @@ do -- Load items
     Button.BorderSizePixel = 0
     Button.Size = UDim2.new(0, 20, 0, 20)
     Button.ZIndex = 3
-    Button.Font = Enum.Font.GothamSemibold
+    Button.Font = Enum.Font.Code
     Button.Text = ""
     Button.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button.TextSize = 14.000
@@ -433,7 +432,7 @@ do -- Load items
     Text.BackgroundTransparency = 1.000
     Text.Position = UDim2.new(0, 28, 0, 0)
     Text.Size = UDim2.new(0, 42, 1, 0)
-    Text.Font = Enum.Font.GothamSemibold
+    Text.Font = Enum.Font.Code
     Text.Text = "Switch"
     Text.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text.TextSize = 14.000
@@ -480,7 +479,7 @@ do -- Load items
     Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Value.BackgroundTransparency = 1.000
     Value.Size = UDim2.new(1, 0, 1, 0)
-    Value.Font = Enum.Font.GothamSemibold
+    Value.Font = Enum.Font.Code
     Value.Text = "6.00"
     Value.TextColor3 = Color3.fromRGB(255, 255, 255)
     Value.TextSize = 14.000
@@ -491,7 +490,7 @@ do -- Load items
     Text_2.BackgroundTransparency = 1.000
     Text_2.Position = UDim2.new(0, 158, 0, 0)
     Text_2.Size = UDim2.new(0, 42, 1, 0)
-    Text_2.Font = Enum.Font.GothamSemibold
+    Text_2.Font = Enum.Font.Code
     Text_2.Text = "Slider"
     Text_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_2.TextSize = 14.000
@@ -504,7 +503,7 @@ do -- Load items
     Button_2.BorderSizePixel = 0
     Button_2.Size = UDim2.new(0, 72, 0, 20)
     Button_2.ZIndex = 3
-    Button_2.Font = Enum.Font.GothamSemibold
+    Button_2.Font = Enum.Font.Code
     Button_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button_2.TextSize = 14.000
 
@@ -628,7 +627,7 @@ do -- Load items
     Button_3.BorderSizePixel = 0
     Button_3.Size = UDim2.new(0, 20, 0, 20)
     Button_3.ZIndex = 3
-    Button_3.Font = Enum.Font.GothamSemibold
+    Button_3.Font = Enum.Font.Code
     Button_3.Text = ""
     Button_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button_3.TextSize = 14.000
@@ -677,7 +676,7 @@ do -- Load items
     Text_3.BackgroundTransparency = 1.000
     Text_3.Position = UDim2.new(0, 28, 0, 0)
     Text_3.Size = UDim2.new(0, 84, 1, 0)
-    Text_3.Font = Enum.Font.GothamSemibold
+    Text_3.Font = Enum.Font.Code
     Text_3.Text = "Color Picker"
     Text_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_3.TextSize = 14.000
@@ -690,7 +689,7 @@ do -- Load items
     DropdownOption.BorderSizePixel = 0
     DropdownOption.Size = UDim2.new(1, 0, 0, 20)
     DropdownOption.ZIndex = 3
-    DropdownOption.Font = Enum.Font.GothamSemibold
+    DropdownOption.Font = Enum.Font.Code
     DropdownOption.Text = "  Option"
     DropdownOption.TextColor3 = Color3.fromRGB(255, 255, 255)
     DropdownOption.TextSize = 14.000
@@ -745,7 +744,7 @@ do -- Load items
     Title_3.Position = UDim2.new(0, 30, 0, 0)
     Title_3.Size = UDim2.new(1, -30, 1, 0)
     Title_3.ZIndex = 4
-    Title_3.Font = Enum.Font.GothamSemibold
+    Title_3.Font = Enum.Font.Code
     Title_3.Text = "Dropdown"
     Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_3.TextSize = 16.000
@@ -854,7 +853,7 @@ do -- Load items
     Selected.BackgroundTransparency = 1.000
     Selected.Position = UDim2.new(0, 10, 1, -30)
     Selected.Size = UDim2.new(1, -10, 0, 30)
-    Selected.Font = Enum.Font.GothamSemibold
+    Selected.Font = Enum.Font.Code
     Selected.Text = "Selected: [...]"
     Selected.TextColor3 = Color3.fromRGB(178, 178, 178)
     Selected.TextSize = 12.000
@@ -910,7 +909,7 @@ do -- Load items
     Title_4.Position = UDim2.new(0, 30, 0, 0)
     Title_4.Size = UDim2.new(1, -30, 1, 0)
     Title_4.ZIndex = 4
-    Title_4.Font = Enum.Font.GothamSemibold
+    Title_4.Font = Enum.Font.Code
     Title_4.Text = "Color Picker"
     Title_4.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title_4.TextSize = 16.000
@@ -1034,7 +1033,7 @@ do -- Load items
     TextLabel.BackgroundTransparency = 1.000
     TextLabel.Position = UDim2.new(0, 10, 1, -35)
     TextLabel.Size = UDim2.new(1, -10, 0, 35)
-    TextLabel.Font = Enum.Font.GothamSemibold
+    TextLabel.Font = Enum.Font.Code
     TextLabel.Text = "Selected:"
     TextLabel.TextColor3 = Color3.fromRGB(178, 178, 178)
     TextLabel.TextSize = 12.000
@@ -1075,7 +1074,7 @@ do -- Load items
     Value_2.BackgroundTransparency = 1.000
     Value_2.Position = UDim2.new(0, 10, 0, 0)
     Value_2.Size = UDim2.new(1, -10, 1, 0)
-    Value_2.Font = Enum.Font.GothamSemibold
+    Value_2.Font = Enum.Font.Code
     Value_2.Text = "Selected"
     Value_2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Value_2.TextSize = 14.000
@@ -1087,7 +1086,7 @@ do -- Load items
     Text_4.BackgroundTransparency = 1.000
     Text_4.Position = UDim2.new(0, 158, 0, 0)
     Text_4.Size = UDim2.new(0, 56, 1, 0)
-    Text_4.Font = Enum.Font.GothamSemibold
+    Text_4.Font = Enum.Font.Code
     Text_4.Text = "Dropdown"
     Text_4.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text_4.TextSize = 14.000
@@ -1376,7 +1375,7 @@ local library library = {
         options = settings.new({
             text = "New Window",
             size = Vector2.new(300, 200),
-            shadow = 0,
+            shadow = 10,
             transparency = 0.2,
             color = Color3.fromRGB(41, 74, 122),
             boardcolor = Color3.fromRGB(21, 22, 23),
@@ -2226,222 +2225,222 @@ local library library = {
                     return self
                 end
 
-                function types.input(inputOptions)
-                    local self = {}
-                
-                    local ContextActionService = game:GetService("ContextActionService")
-                    local UserInputService = game:GetService("UserInputService")
-                    local RunService = game:GetService("RunService")
-                
-                    self.event = event.new()
-                    self.eventBlock = false
-                
-                    inputOptions = settings.new({
-                        text = "New Input",
-                        placeholder = "Enter text...",
-                        color = options.color,
-                        rounding = options.rounding,
-                        clearonfocus = true,
-                        size = 150,
-                    }).handle(inputOptions)
-                
-                    local input = new("Dropdown")
-                    input.Parent = items
-                    local outer = input:FindFirstChild("Outer")
-                    local inner = outer:FindFirstChild("Inner")
-                    local value = inner:FindFirstChild("Value")
-                    local text = input:FindFirstChild("Text")
-                
-                    outer.SliceScale = inputOptions.rounding / 100
-                    inner.SliceScale = inputOptions.rounding / 100
-                    inner.ImageColor3 = inputOptions.color
-                    value.Text = inputOptions.placeholder
-                    value.TextColor3 = Color3.fromRGB(178, 178, 178)
-                
-                    text.Text = inputOptions.text
-                    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-                    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-                    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
-                
-                    local inTextBox = false
-                    local textValue = ""
-                    local lastTick = tick()
-                    local lastTickN = 1
-                    local canType = false
-                    local shift = false
-                    local backspace = false
-                
-                    local function blockMovement()
-                        return Enum.ContextActionResult.Sink
-                    end
-                
-                    local function disableMovement()
-                        ContextActionService:BindAction("BlockMovement", blockMovement, false,
-                            Enum.PlayerActions.CharacterForward,
-                            Enum.PlayerActions.CharacterBackward,
-                            Enum.PlayerActions.CharacterLeft,
-                            Enum.PlayerActions.CharacterRight,
-                            Enum.PlayerActions.CharacterJump
-                        )
-                    end
-                
-                    local function enableMovement()
-                        ContextActionService:UnbindAction("BlockMovement")
-                    end
-                
-                    inner.MouseEnter:Connect(function()
-                        inTextBox = true
-                    end)
-                
-                    inner.MouseLeave:Connect(function()
-                        inTextBox = false
-                    end)
-                
-                    local function updateText()
-                        if textValue == " " then
-                            value.Text = inputOptions.placeholder
-                            value.TextColor3 = Color3.fromRGB(178, 178, 178)
-                        else
-                            value.Text = textValue .. (lastTickN == 1 and "|" or "")
-                            value.TextColor3 = Color3.new(1, 1, 1)
-                        end
-                    end
-                
-                    mouse.InputBegan:Connect(function()
-                        if inTextBox and findBrowsingTopMost() == main then
-                            if not canType then
-                                canType = true
-                                disableMovement()
-                                if inputOptions.clearonfocus then
-                            textValue = ""
-                                updateText()
-                                end
-                
-                                spawn(function()
-                                    while canType do
-                                        updateText()
-                                        if (tick() - lastTick) >= 0.5 then
-                                            lastTick = tick()
-                                            lastTickN = 1 - lastTickN
-                                        end
-                                        RunService.Heartbeat:Wait()
-                                    end
-                                    lastTickN = 0
-                                    updateText()
-                                end)
-                            end
-                        else
-                            if canType then
-                                canType = false
-                                self.event:Fire(textValue)
-                                enableMovement()
-                                updateText()
-                            end
-                        end
-                    end)
-                
-                    UserInputService.InputBegan:Connect(function(inputObject)
-                        local keycode = inputObject.KeyCode
-                
-                        if keycode == Enum.KeyCode.LeftShift then
-                            shift = true
-                        end
-                
-                        if canType then
-                            if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
-                                canType = false
-                                self.event:Fire(textValue)
-                                enableMovement()
-                                updateText()
-                                return
-                            end
-                
-                            if keycode == Enum.KeyCode.Backspace then
-                                backspace = true
-                                textValue = textValue:sub(1, -2)
-                                updateText()
-                                self.event:Fire(textValue)
-                
-                                local backspaceTick = tick()
-                                local backspaceN = 0.5
-                
-                                spawn(function()
-                                    while backspace do
-                                        if (tick() - backspaceTick) >= backspaceN then
-                                            backspaceN = 0.05
-                                            backspaceTick = tick()
-                                            textValue = textValue:sub(1, -2)
-                                            updateText()
-                                            self.event:Fire(textValue)
-                                        end
-                                        RunService.Heartbeat:Wait()
-                                    end
-                                end)
-                            elseif keycode == Enum.KeyCode.Space then
-                                textValue = textValue .. " "
-                                updateText()
-                                self.event:Fire(textValue)
-                            end
-                
-                            if betweenOpenInterval(keycode.Value, 48, 57) then
-                                local name = rawget({
-                                    Zero = "0", One = "1", Two = "2", Three = "3", Four = "4",
-                                    Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9"
-                                }, keycode.Name)
-                                if shift then
-                                    name = rawget({
-                                        ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$",
-                                        ["5"] = "%", ["6"] = "^", ["7"] = "&", ["8"] = "*", ["9"] = "("
-                                    }, name)
-                                end
-                                textValue = textValue .. (name or "")
-                                updateText()
-                                self.event:Fire(textValue)
-                            end
-                
-                            if betweenOpenInterval(keycode.Value, 97, 122) then
-                                local name = (not shift) and keycode.Name:lower() or keycode.Name
-                                textValue = textValue .. name
-                                updateText()
-                                self.event:Fire(textValue)
-                            end
-                        end
-                    end)
-                
-                    UserInputService.InputEnded:Connect(function(inputObject)
-                        if inputObject.KeyCode == Enum.KeyCode.LeftShift then
-                            shift = false
-                        elseif inputObject.KeyCode == Enum.KeyCode.Backspace then
-                            backspace = false
-                        end
-                    end)
-                
-                    function self.setText(text)
-                        textValue = text or ""
-                        updateText()
-                    end
-                
-                    function self.getText()
-                        return textValue
-                    end
-                
-                    function self.setColor(color)
-                        inner.ImageColor3 = color
-                    end
-                
-                    function self.getColor()
-                        return inner.ImageColor3
-                    end
-                
-                    function self:Destroy()
-                        input:Destroy()
-                    end
-                
-                    self.options = inputOptions
-                    self.self = input
-                
-                    return self
-                end
+		function types.input(inputOptions)
+		    local self = {}
+		
+		    local ContextActionService = game:GetService("ContextActionService")
+		    local UserInputService = game:GetService("UserInputService")
+		    local RunService = game:GetService("RunService")
+		
+		    self.event = event.new()
+		    self.eventBlock = false
+		
+		    inputOptions = settings.new({
+		        text = "New Input",
+		        placeholder = "Enter text...",
+		        color = options.color,
+		        rounding = options.rounding,
+		        clearonfocus = true,
+		        size = 150,
+		    }).handle(inputOptions)
+		
+		    local input = new("Dropdown")
+		    input.Parent = items
+		    local outer = input:FindFirstChild("Outer")
+		    local inner = outer:FindFirstChild("Inner")
+		    local value = inner:FindFirstChild("Value")
+		    local text = input:FindFirstChild("Text")
+		
+		    outer.SliceScale = inputOptions.rounding / 100
+		    inner.SliceScale = inputOptions.rounding / 100
+		    inner.ImageColor3 = inputOptions.color
+		    value.Text = inputOptions.placeholder
+		    value.TextColor3 = Color3.fromRGB(178, 178, 178)
+		
+		    text.Text = inputOptions.text
+		    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
+		    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+		    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
+		
+		    local inTextBox = false
+		    local textValue = ""
+		    local lastTick = tick()
+		    local lastTickN = 1
+		    local canType = false
+		    local shift = false
+		    local backspace = false
+		
+		    local function blockMovement()
+		        return Enum.ContextActionResult.Sink
+		    end
+		
+		    local function disableMovement()
+		        ContextActionService:BindAction("BlockMovement", blockMovement, false,
+		            Enum.PlayerActions.CharacterForward,
+		            Enum.PlayerActions.CharacterBackward,
+		            Enum.PlayerActions.CharacterLeft,
+		            Enum.PlayerActions.CharacterRight,
+		            Enum.PlayerActions.CharacterJump
+		        )
+		    end
+		
+		    local function enableMovement()
+		        ContextActionService:UnbindAction("BlockMovement")
+		    end
+		
+		    inner.MouseEnter:Connect(function()
+		        inTextBox = true
+		    end)
+		
+		    inner.MouseLeave:Connect(function()
+		        inTextBox = false
+		    end)
+		
+		    local function updateText()
+		        if textValue == " " then
+		            value.Text = inputOptions.placeholder
+		            value.TextColor3 = Color3.fromRGB(178, 178, 178)
+		        else
+		            value.Text = textValue .. (lastTickN == 1 and "|" or "")
+		            value.TextColor3 = Color3.new(1, 1, 1)
+		        end
+		    end
+		
+		    mouse.InputBegan:Connect(function()
+		        if inTextBox and findBrowsingTopMost() == main then
+		            if not canType then
+		                canType = true
+		                disableMovement()
+		                if inputOptions.clearonfocus then
+					textValue = ""
+			    		updateText()
+		                end
+		
+		                spawn(function()
+		                    while canType do
+		                        updateText()
+		                        if (tick() - lastTick) >= 0.5 then
+		                            lastTick = tick()
+		                            lastTickN = 1 - lastTickN
+		                        end
+		                        RunService.Heartbeat:Wait()
+		                    end
+		                    lastTickN = 0
+		                    updateText()
+		                end)
+		            end
+		        else
+		            if canType then
+		                canType = false
+		                self.event:Fire(textValue)
+		                enableMovement()
+		                updateText()
+		            end
+		        end
+		    end)
+		
+		    UserInputService.InputBegan:Connect(function(inputObject)
+		        local keycode = inputObject.KeyCode
+		
+		        if keycode == Enum.KeyCode.LeftShift then
+		            shift = true
+		        end
+		
+		        if canType then
+		            if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
+		                canType = false
+		                self.event:Fire(textValue)
+		                enableMovement()
+		                updateText()
+		                return
+		            end
+		
+		            if keycode == Enum.KeyCode.Backspace then
+		                backspace = true
+		                textValue = textValue:sub(1, -2)
+		                updateText()
+		                self.event:Fire(textValue)
+		
+		                local backspaceTick = tick()
+		                local backspaceN = 0.5
+		
+		                spawn(function()
+		                    while backspace do
+		                        if (tick() - backspaceTick) >= backspaceN then
+		                            backspaceN = 0.05
+		                            backspaceTick = tick()
+		                            textValue = textValue:sub(1, -2)
+		                            updateText()
+		                            self.event:Fire(textValue)
+		                        end
+		                        RunService.Heartbeat:Wait()
+		                    end
+		                end)
+		            elseif keycode == Enum.KeyCode.Space then
+		                textValue = textValue .. " "
+		                updateText()
+		                self.event:Fire(textValue)
+		            end
+		
+		            if betweenOpenInterval(keycode.Value, 48, 57) then
+		                local name = rawget({
+		                    Zero = "0", One = "1", Two = "2", Three = "3", Four = "4",
+		                    Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9"
+		                }, keycode.Name)
+		                if shift then
+		                    name = rawget({
+		                        ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$",
+		                        ["5"] = "%", ["6"] = "^", ["7"] = "&", ["8"] = "*", ["9"] = "("
+		                    }, name)
+		                end
+		                textValue = textValue .. (name or "")
+		                updateText()
+		                self.event:Fire(textValue)
+		            end
+		
+		            if betweenOpenInterval(keycode.Value, 97, 122) then
+		                local name = (not shift) and keycode.Name:lower() or keycode.Name
+		                textValue = textValue .. name
+		                updateText()
+		                self.event:Fire(textValue)
+		            end
+		        end
+		    end)
+		
+		    UserInputService.InputEnded:Connect(function(inputObject)
+		        if inputObject.KeyCode == Enum.KeyCode.LeftShift then
+		            shift = false
+		        elseif inputObject.KeyCode == Enum.KeyCode.Backspace then
+		            backspace = false
+		        end
+		    end)
+		
+		    function self.setText(text)
+		        textValue = text or ""
+		        updateText()
+		    end
+		
+		    function self.getText()
+		        return textValue
+		    end
+		
+		    function self.setColor(color)
+		        inner.ImageColor3 = color
+		    end
+		
+		    function self.getColor()
+		        return inner.ImageColor3
+		    end
+		
+		    function self:Destroy()
+		        input:Destroy()
+		    end
+		
+		    self.options = inputOptions
+		    self.self = input
+		
+		    return self
+		end
 
 				
                 function types.dock(dockOptions)
