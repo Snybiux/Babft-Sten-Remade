@@ -2248,144 +2248,123 @@ local library library = {
                     return self
                 end
 
-				types.input = function(inputOptions)
-				    local self = {}
-				    self.event = event.new()
-				    
-				    -- Default options
-				    inputOptions = settings.new({
-				        text = "Input",
-				        placeholder = "Enter text...",
-				        color = Color3.fromRGB(32, 59, 97),
-				        rounding = 5,
-				        clearonfocus = false,
-				        size = 150,
-				        textcolor = Color3.new(1, 1, 1),
-				        placeholdercolor = Color3.fromRGB(178, 178, 178)
-				    }).handle(inputOptions)
-				
-				    -- Create elements from template
-				    local input = new("Dropdown")
-				    input.Parent = items
-				    
-				    -- Get references to elements
-				    local outer = input:FindFirstChild("Outer")
-				    local inner = outer:FindFirstChild("Inner")
-				    local value = inner:FindFirstChild("Value")
-				    local textLabel = input:FindFirstChild("Text")
-				    
-				    -- Setup visuals
-				    outer.SliceScale = inputOptions.rounding/100
-				    inner.SliceScale = inputOptions.rounding/100
-				    inner.ImageColor3 = inputOptions.color
-				    value.Text = inputOptions.placeholder
-				    value.TextColor3 = inputOptions.placeholdercolor
-				    textLabel.Text = inputOptions.text
-				    textLabel.TextColor3 = inputOptions.textcolor
-				    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-				    textLabel.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-				    input.Size = UDim2.new(0, inputOptions.size + 8 + textLabel.TextBounds.X, 0, 20)
-				
-				    -- Create hidden TextBox for actual input
-				    local realTextBox = Instance.new("TextBox")
-				    realTextBox.Visible = false
-				    realTextBox.Parent = inner
-				    realTextBox.ClearTextOnFocus = inputOptions.clearonfocus
-				    realTextBox.Text = ""
-				
-				    -- Track focus state
-				    local isFocused = false
-				    local cursorVisible = false
-				    local lastCursorToggle = 0
-				
-				    -- Update the display text
-				    local function updateDisplay()
-				        if realTextBox.Text == "" then
-				            value.Text = inputOptions.placeholder
-				            value.TextColor3 = inputOptions.placeholdercolor
-				        else
-				            value.Text = realTextBox.Text
-				            if isFocused and os.clock() - lastCursorToggle > 0.5 then
-				                cursorVisible = not cursorVisible
-				                lastCursorToggle = os.clock()
-				                value.Text = realTextBox.Text .. (cursorVisible and "|" or "")
-				            end
-				            value.TextColor3 = inputOptions.textcolor
-				        end
-				    end
-				
-				    -- Handle text changes
-				    realTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-				        updateDisplay()
-				        self.event:Fire(realTextBox.Text)
-				    end)
-				
-				    -- Handle focus
-				    local function setFocus(focused)
-				        isFocused = focused
-				        if focused then
-				            realTextBox:CaptureFocus()
-				            if inputOptions.clearonfocus then
-				                realTextBox.Text = ""
-				            end
-				            cursorVisible = true
-				            lastCursorToggle = os.clock()
-				        else
-				            realTextBox:ReleaseFocus()
-				            cursorVisible = false
-				        end
-				        updateDisplay()
-				    end
-				
-				    -- Click to focus
-				    inner.MouseButton1Click:Connect(function()
-				        if findBrowsingTopMost() == main then
-				            setFocus(true)
-				        end
-				    end)
-				
-				    -- Lose focus when clicking elsewhere
-				    UserInputService.InputBegan:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            if not inner:IsDescendantOf(input.Target) then
-				                setFocus(false)
-				            end
-				        end
-				    end)
-				
-				    -- Cursor blink animation
-				    game:GetService("RunService").Heartbeat:Connect(function()
-				        if isFocused then
-				            updateDisplay()
-				        end
-				    end)
-				
-				    -- API functions
-				    function self.setText(text)
-				        realTextBox.Text = text or ""
-				    end
-				
-				    function self.getText()
-				        return realTextBox.Text
-				    end
-				
-				    function self.setColor(color)
-				        inner.ImageColor3 = color
-				    end
-				
-				    function self.getColor()
-				        return inner.ImageColor3
-				    end
-				
-				    function self:Destroy()
-				        setFocus(false)
-				        realTextBox:Destroy()
-				        input:Destroy()
-				    end
-				
-				    self.self = input
-				    return self
-				end
+                types.input = function(inputOptions)
+                    local self = {}
+                    self.event = event.new()
+                    
+                    -- Default options
+                    inputOptions = settings.new({
+                        text = "Input",
+                        placeholder = "Enter text...",
+                        color = Color3.fromRGB(32, 59, 97),
+                        rounding = 5,
+                        clearonfocus = true,
+                        size = 150,
+                        textcolor = Color3.new(1, 1, 1),
+                        placeholdercolor = Color3.fromRGB(178, 178, 178)
+                    }).handle(inputOptions)
+
+                    -- Create elements from template
+                    local input = new("Dropdown")
+                    input.Parent = items
+                    
+                    -- Get references to elements
+                    local outer = input:FindFirstChild("Outer")
+                    local inner = outer:FindFirstChild("Inner")
+                    local value = inner:FindFirstChild("Value")
+                    local textLabel = input:FindFirstChild("Text")
+                    
+                    -- Setup visuals
+                    outer.SliceScale = inputOptions.rounding/100
+                    inner.SliceScale = inputOptions.rounding/100
+                    inner.ImageColor3 = inputOptions.color
+                    value.Text = inputOptions.placeholder
+                    value.TextColor3 = inputOptions.placeholdercolor
+                    textLabel.Text = inputOptions.text
+                    textLabel.TextColor3 = inputOptions.textcolor
+                    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
+                    textLabel.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+                    input.Size = UDim2.new(0, inputOptions.size + 8 + textLabel.TextBounds.X, 0, 20)
+
+                    -- Create real TextBox for input
+                    local realTextBox = Instance.new("TextBox")
+                    realTextBox.Size = UDim2.new(1, 0, 1, 0)
+                    realTextBox.BackgroundTransparency = 1
+                    realTextBox.TextColor3 = inputOptions.textcolor
+                    realTextBox.Text = ""
+                    realTextBox.TextXAlignment = Enum.TextXAlignment.Left
+                    realTextBox.PlaceholderText = inputOptions.placeholder
+                    realTextBox.PlaceholderColor3 = inputOptions.placeholdercolor
+                    realTextBox.ClearTextOnFocus = inputOptions.clearonfocus
+                    realTextBox.Parent = inner
+
+                    -- Track focus state
+                    local isFocused = false
+
+                    -- Handle focus changes
+                    realTextBox.Focused:Connect(function()
+                        isFocused = true
+                        value.Visible = false
+                    end)
+
+                    realTextBox.FocusLost:Connect(function()
+                        isFocused = false
+                        if realTextBox.Text == "" then
+                            value.Visible = true
+                        end
+                        self.event:Fire(realTextBox.Text)
+                    end)
+
+                    -- Handle text changes
+                    realTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+                        if not isFocused and realTextBox.Text ~= "" then
+                            value.Text = realTextBox.Text
+                            value.TextColor3 = inputOptions.textcolor
+                            value.Visible = true
+                        end
+                    end)
+
+                    -- Click to focus
+                    inner.MouseButton1Click:Connect(function()
+                        if findBrowsingTopMost() == main then
+                            realTextBox:CaptureFocus()
+                        end
+                    end)
+
+                    -- API functions
+                    function self.setText(text)
+                        realTextBox.Text = text or ""
+                        if text ~= "" then
+                            value.Text = text
+                            value.TextColor3 = inputOptions.textcolor
+                            value.Visible = true
+                        else
+                            value.Text = inputOptions.placeholder
+                            value.TextColor3 = inputOptions.placeholdercolor
+                            value.Visible = true
+                        end
+                    end
+
+                    function self.getText()
+                        return realTextBox.Text
+                    end
+
+                    function self.setColor(color)
+                        inner.ImageColor3 = color
+                    end
+
+                    function self.getColor()
+                        return inner.ImageColor3
+                    end
+
+                    function self:Destroy()
+                        realTextBox:Destroy()
+                        input:Destroy()
+                    end
+
+                    self.self = input
+                    return self
+                end
 
                 function types.dock(dockOptions)
                     local self = { }
