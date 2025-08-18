@@ -1,4 +1,4 @@
-
+print("Test")
 --[[
 	rbimgui-2
 	version 1.2
@@ -1511,7 +1511,7 @@ local library library = {
                     label.Size = UDim2.new(0, label.TextBounds.X, 0, label.Size.Y.Offset)
                     label.TextColor3 = labelOptions.color
 
-                    function self.setText(text)
+                    function self.setText(text) -- type
                         label.Text = text
                         label.Size = UDim2.new(0, label.TextBounds.X, 0, label.Size.Y.Offset)
                     end
@@ -2265,17 +2265,58 @@ local library library = {
                     end)
 
                     function self.new(type, typeOptions)
-                        assert(typeof(type) == "string", "expected string as #1 argument")
+                        -- Input validation
+                        if typeof(type) ~= "string" then
+                            error("expected string as #1 argument, got "..typeof(type), 2)
+                        end
+                        
                         type = type:lower()
-                        assert(type ~= "folder", "illegal type")
-
-                        local p = rawget(types, type)
-                        assert(p, "invalid type")
-                        local o = p(typeOptions)
-                        o.type = type
-                        o.self.Parent = self.self
-
-                        return o
+                        
+                        -- Get the constructor function for this type
+                        local constructor = rawget(types, type)
+                        if not constructor then
+                            -- List available types for better error messaging
+                            local availableTypes = {}
+                            for k in pairs(types) do
+                                table.insert(availableTypes, k)
+                            end
+                            error("invalid UI type '"..type.."'. Available types: "..table.concat(availableTypes, ", "), 2)
+                        end
+                        
+                        -- Create the UI element
+                        local element
+                        local success, err = pcall(function()
+                            element = constructor(typeOptions)
+                        end)
+                        
+                        if not success then
+                            error("failed to create "..type..": "..tostring(err), 2)
+                        end
+                        
+                        -- Set element metadata
+                        element.type = type
+                        
+                        -- Set up event forwarding
+                        if element.type == "folder" then
+                            element.updated:Connect(updateCanvas)
+                        end
+                        
+                        -- Return with protected metatable
+                        return setmetatable(element, {
+                            __index = function(t, k)
+                                -- First check the element itself
+                                local val = rawget(t, k)
+                                if val ~= nil then return val end
+                                
+                                -- Then check the event object if it exists
+                                if rawget(t, "event") then
+                                    return rawget(t.event, k)
+                                end
+                                
+                                return nil
+                            end,
+                            __newindex = function() end  -- Prevent accidental modifications
+                        })
                     end
 
                     self.updated = event.new()
