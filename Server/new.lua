@@ -1,4 +1,4 @@
-print("Test1234354643")
+print("Test12343")
 --[[
 	rbimgui-2
 	version 1.2
@@ -2332,137 +2332,144 @@ local library library = {
                     return self
                 end
 
-				function types.input(inputOptions)
-				    local self = {}
-				    self.event = event.new()
-				    self.eventBlock = false
-				
-				    inputOptions = settings.new({
-				        text = "New Input",
-				        placeholder = "Enter text...",
-				        color = options.color,
-				        rounding = options.rounding,
-				        clearonfocus = true,
-				        size = 150,
-				    }).handle(inputOptions)
-				
-				    local input = new("Dropdown")
-				    input.Parent = items
-				    local outer = input:FindFirstChild("Outer")
-				    local inner = outer:FindFirstChild("Inner")
-				    local value = inner:FindFirstChild("Value")
-				    local text = input:FindFirstChild("Text")
-				
-				    outer.SliceScale = inputOptions.rounding / 100
-				    inner.SliceScale = inputOptions.rounding / 100
-				    inner.ImageColor3 = inputOptions.color
-				    value.Text = inputOptions.placeholder
-				    value.TextColor3 = Color3.fromRGB(178, 178, 178)
-				
-				    text.Text = inputOptions.text
-				    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-				    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-				    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
-				
-				    local textValue = ""
-				    local isFocused = false
-				    local cursorVisible = false
-				    local cursorTick = 0
-				
-				    -- Better text input handling using TextBox
-				    local realTextBox = Instance.new("TextBox")
-				    realTextBox.Visible = false
-				    realTextBox.Parent = inner
-				    realTextBox.ClearTextOnFocus = inputOptions.clearonfocus
-				    
-				    local function updateDisplay()
-				        if textValue == "" then
-				            value.Text = inputOptions.placeholder
-				            value.TextColor3 = Color3.fromRGB(178, 178, 178)
-				        else
-				            value.Text = textValue .. (cursorVisible and "|" or "")
-				            value.TextColor3 = Color3.new(1, 1, 1)
-				        end
-				    end
-				
-				    local function toggleFocus(focus)
-				        isFocused = focus
-				        if focus then
-				            realTextBox:CaptureFocus()
-				            if inputOptions.clearonfocus then
-				                textValue = ""
-				            end
-				            cursorTick = tick()
-				            updateDisplay()
-				        else
-				            realTextBox:ReleaseFocus()
-				            self.event:Fire(textValue)
-				            updateDisplay()
-				        end
-				    end
-				
-				    -- Handle actual text input through TextBox
-				    realTextBox:GetPropertyChangedSignal("Text"):Connect(function()
-				        textValue = realTextBox.Text
-				        updateDisplay()
-				        self.event:Fire(textValue)
-				    end)
-				
-				    -- Cursor blinking
-				    game:GetService("RunService").Heartbeat:Connect(function()
-				        if isFocused and tick() - cursorTick > 0.5 then
-				            cursorTick = tick()
-				            cursorVisible = not cursorVisible
-				            updateDisplay()
-				        end
-				    end)
-				
-				    -- Focus management
-				    inner.MouseButton1Click:Connect(function()
-				        if findBrowsingTopMost() == main then
-				            toggleFocus(not isFocused)
-				        end
-				    end)
-				
-				    -- Lose focus when clicking elsewhere
-				    UserInputService.InputBegan:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            if not inner:IsDescendantOf(input.Target) then
-				                toggleFocus(false)
-				            end
-				        end
-				    end)
-				
-				    -- API functions
-				    function self.setText(newText)
-				        textValue = newText or ""
-				        realTextBox.Text = textValue
-				        updateDisplay()
-				    end
-				
-				    function self.getText()
-				        return textValue
-				    end
-				
-				    function self.setColor(color)
-				        inner.ImageColor3 = color
-				    end
-				
-				    function self.getColor()
-				        return inner.ImageColor3
-				    end
-				
-				    function self:Destroy()
-				        toggleFocus(false)
-				        realTextBox:Destroy()
-				        input:Destroy()
-				    end
-				
-				    self.options = inputOptions
-				    self.self = input
-				
-				    return self
-				end
+                types.input = function(inputOptions)
+                    local self = {}
+                    self.event = event.new()
+                    
+                    -- Default options
+                    inputOptions = settings.new({
+                        text = "Input",
+                        placeholder = "Enter text...",
+                        color = Color3.fromRGB(32, 59, 97),
+                        rounding = 5,
+                        clearonfocus = false,
+                        size = 150,
+                        textcolor = Color3.new(1, 1, 1),
+                        placeholdercolor = Color3.fromRGB(178, 178, 178)
+                    }).handle(inputOptions)
+
+                    -- Create elements from template
+                    local input = new("Dropdown")
+                    input.Parent = items
+                    
+                    -- Get references to elements
+                    local outer = input:FindFirstChild("Outer")
+                    local inner = outer:FindFirstChild("Inner")
+                    local value = inner:FindFirstChild("Value")
+                    local textLabel = input:FindFirstChild("Text")
+                    
+                    -- Setup visuals
+                    outer.SliceScale = inputOptions.rounding/100
+                    inner.SliceScale = inputOptions.rounding/100
+                    inner.ImageColor3 = inputOptions.color
+                    value.Text = inputOptions.placeholder
+                    value.TextColor3 = inputOptions.placeholdercolor
+                    textLabel.Text = inputOptions.text
+                    textLabel.TextColor3 = inputOptions.textcolor
+                    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
+                    textLabel.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+                    input.Size = UDim2.new(0, inputOptions.size + 8 + textLabel.TextBounds.X, 0, 20)
+
+                    -- Create hidden TextBox for actual input
+                    local realTextBox = Instance.new("TextBox")
+                    realTextBox.Visible = false
+                    realTextBox.Parent = inner
+                    realTextBox.ClearTextOnFocus = inputOptions.clearonfocus
+                    realTextBox.Text = ""
+
+                    -- Track focus state
+                    local isFocused = false
+                    local cursorVisible = false
+                    local lastCursorToggle = 0
+
+                    -- Update the display text
+                    local function updateDisplay()
+                        if realTextBox.Text == "" then
+                            value.Text = inputOptions.placeholder
+                            value.TextColor3 = inputOptions.placeholdercolor
+                        else
+                            value.Text = realTextBox.Text
+                            if isFocused and os.clock() - lastCursorToggle > 0.5 then
+                                cursorVisible = not cursorVisible
+                                lastCursorToggle = os.clock()
+                                value.Text = realTextBox.Text .. (cursorVisible and "|" or "")
+                            end
+                            value.TextColor3 = inputOptions.textcolor
+                        end
+                    end
+
+                    -- Handle text changes
+                    realTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+                        updateDisplay()
+                        self.event:Fire(realTextBox.Text)
+                    end)
+
+                    -- Handle focus
+                    local function setFocus(focused)
+                        isFocused = focused
+                        if focused then
+                            realTextBox:CaptureFocus()
+                            if inputOptions.clearonfocus then
+                                realTextBox.Text = ""
+                            end
+                            cursorVisible = true
+                            lastCursorToggle = os.clock()
+                        else
+                            realTextBox:ReleaseFocus()
+                            cursorVisible = false
+                        end
+                        updateDisplay()
+                    end
+
+                    -- Click to focus
+                    inner.MouseButton1Click:Connect(function()
+                        if findBrowsingTopMost() == main then
+                            setFocus(true)
+                        end
+                    end)
+
+                    -- Lose focus when clicking elsewhere
+                    UserInputService.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            if not inner:IsDescendantOf(input.Target) then
+                                setFocus(false)
+                            end
+                        end
+                    end)
+
+                    -- Cursor blink animation
+                    game:GetService("RunService").Heartbeat:Connect(function()
+                        if isFocused then
+                            updateDisplay()
+                        end
+                    end)
+
+                    -- API functions
+                    function self.setText(text)
+                        realTextBox.Text = text or ""
+                    end
+
+                    function self.getText()
+                        return realTextBox.Text
+                    end
+
+                    function self.setColor(color)
+                        inner.ImageColor3 = color
+                    end
+
+                    function self.getColor()
+                        return inner.ImageColor3
+                    end
+
+                    function self:Destroy()
+                        setFocus(false)
+                        realTextBox:Destroy()
+                        input:Destroy()
+                    end
+
+                    self.self = input
+                    return self
+                end
 
                 function types.folder(folderOptions)
                     local self = { }
@@ -2694,5 +2701,4 @@ do -- window history zindex
 end
 
 return library
-
 
