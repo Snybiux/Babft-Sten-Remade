@@ -2,7 +2,7 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 
-local MAIN_COLOR = Color3.fromRGB(41, 74, 122)
+local MAIN_COLOR = Color3.fromRGB(176, 27, 16)
 local BACKGROUND_COLOR = Color3.fromRGB(21, 22, 23)
 local TEXT_COLOR = Color3.fromRGB(255, 255, 255)
 
