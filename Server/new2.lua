@@ -2246,20 +2246,31 @@ local library library = {
 				
 				    local input = new("Dropdown")
 				    input.Parent = items
+				
 				    local outer = input:FindFirstChild("Outer")
 				    local inner = outer:FindFirstChild("Inner")
 				    local value = inner:FindFirstChild("Value")
-				    local text = input:FindFirstChild("Text")
+				    local label = input:FindFirstChild("Text")
 				
+				    -- Remove/hide any extra placeholder label that may cause the duplicate
+				    for _, child in ipairs(input:GetDescendants()) do
+				        if child:IsA("TextLabel") and child ~= value and child ~= label then
+				            child.Visible = false
+				            child.Text = ""
+				        end
+				    end
+				
+				    -- Style
 				    outer.SliceScale = inputOptions.rounding / 100
 				    inner.SliceScale = inputOptions.rounding / 100
 				    inner.ImageColor3 = inputOptions.color
 				
-				    text.Text = inputOptions.text
+				    label.Text = inputOptions.text
 				    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
-				    text.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
-				    input.Size = UDim2.new(0, inputOptions.size + 8 + text.TextBounds.X, 0, 20)
+				    label.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
+				    input.Size = UDim2.new(0, inputOptions.size + 8 + label.TextBounds.X, 0, 20)
 				
+				    -- Input handling state
 				    local inTextBox = false
 				    local textValue = ""
 				    local lastTick = tick()
@@ -2296,50 +2307,59 @@ local library library = {
 				    end)
 				
 				    local function updateText()
-				        if textValue == nil or textValue == "" then
+				        if canType then
+				            value.Text = textValue .. (lastTickN == 1 and "|" or "")
+				            value.TextColor3 = Color3.new(1, 1, 1)
+				        elseif textValue == "" then
 				            value.Text = inputOptions.placeholder
 				            value.TextColor3 = Color3.fromRGB(178, 178, 178)
 				        else
-				            local displayText = textValue
-				            if canType then
-				                displayText = displayText .. (lastTickN == 1 and "|" or "")
-				            end
-				            value.Text = displayText
+				            value.Text = textValue
 				            value.TextColor3 = Color3.new(1, 1, 1)
 				        end
 				    end
 				
-				    mouse.InputBegan:Connect(function()
-				        if inTextBox and findBrowsingTopMost() == main then
-				            if not canType then
-				                canType = true
-				                disableMovement()
+				    -- Use accurate position checking to avoid misfires
+				    UserInputService.InputBegan:Connect(function(inputObject)
+				        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+				            local mousePos = UserInputService:GetMouseLocation()
+				            local absPos = inner.AbsolutePosition
+				            local absSize = inner.AbsoluteSize
+				            local insideBox = mousePos.X >= absPos.X and mousePos.X <= absPos.X + absSize.X and
+				                              mousePos.Y >= absPos.Y and mousePos.Y <= absPos.Y + absSize.Y
 				
-				                if inputOptions.clearonfocus and not hasFocused then
-				                    textValue = ""
-				                    hasFocused = true
-				                end
-				                updateText()
+				            if insideBox and findBrowsingTopMost() == main then
+				                if not canType then
+				                    canType = true
+				                    disableMovement()
 				
-				                spawn(function()
-				                    while canType do
-				                        updateText()
-				                        if (tick() - lastTick) >= 0.5 then
-				                            lastTick = tick()
-				                            lastTickN = 1 - lastTickN
-				                        end
-				                        RunService.Heartbeat:Wait()
+				                    if inputOptions.clearonfocus and not hasFocused then
+				                        textValue = ""
+				                        hasFocused = true
 				                    end
-				                    lastTickN = 0
+				
 				                    updateText()
-				                end)
-				            end
-				        else
-				            if canType then
-				                canType = false
-				                self.event:Fire(textValue)
-				                enableMovement()
-				                updateText()
+				
+				                    spawn(function()
+				                        while canType do
+				                            updateText()
+				                            if (tick() - lastTick) >= 0.5 then
+				                                lastTick = tick()
+				                                lastTickN = 1 - lastTickN
+				                            end
+				                            RunService.Heartbeat:Wait()
+				                        end
+				                        lastTickN = 0
+				                        updateText()
+				                    end)
+				                end
+				            else
+				                if canType then
+				                    canType = false
+				                    enableMovement()
+				                    self.event:Fire(textValue)
+				                    updateText()
+				                end
 				            end
 				        end
 				    end)
@@ -2354,8 +2374,8 @@ local library library = {
 				        if canType then
 				            if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
 				                canType = false
-				                self.event:Fire(textValue)
 				                enableMovement()
+				                self.event:Fire(textValue)
 				                updateText()
 				                return
 				            end
@@ -2387,18 +2407,20 @@ local library library = {
 				                self.event:Fire(textValue)
 				            end
 				
-				            -- Numbers
+				            -- Digits
 				            if betweenOpenInterval(keycode.Value, 48, 57) then
 				                local name = rawget({
 				                    Zero = "0", One = "1", Two = "2", Three = "3", Four = "4",
 				                    Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9"
 				                }, keycode.Name)
+				
 				                if shift then
 				                    name = rawget({
 				                        ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$",
 				                        ["5"] = "%", ["6"] = "^", ["7"] = "&", ["8"] = "*", ["9"] = "("
 				                    }, name)
 				                end
+				
 				                textValue = textValue .. (name or "")
 				                updateText()
 				                self.event:Fire(textValue)
@@ -2406,7 +2428,7 @@ local library library = {
 				
 				            -- Letters
 				            if betweenOpenInterval(keycode.Value, 97, 122) then
-				                local name = (not shift) and keycode.Name:lower() or keycode.Name
+				                local name = shift and keycode.Name or keycode.Name:lower()
 				                textValue = textValue .. name
 				                updateText()
 				                self.event:Fire(textValue)
@@ -2422,6 +2444,7 @@ local library library = {
 				        end
 				    end)
 				
+				    -- Utility functions
 				    function self.setText(text)
 				        textValue = text or ""
 				        updateText()
@@ -2446,8 +2469,7 @@ local library library = {
 				    self.options = inputOptions
 				    self.self = input
 				
-				    -- Initial render
-				    updateText()
+				    updateText() -- Initial render
 				
 				    return self
 				end
