@@ -2254,8 +2254,6 @@ local library library = {
 				    outer.SliceScale = inputOptions.rounding / 100
 				    inner.SliceScale = inputOptions.rounding / 100
 				    inner.ImageColor3 = inputOptions.color
-				    value.Text = inputOptions.placeholder
-				    value.TextColor3 = Color3.fromRGB(178, 178, 178)
 				
 				    text.Text = inputOptions.text
 				    outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
@@ -2269,6 +2267,7 @@ local library library = {
 				    local canType = false
 				    local shift = false
 				    local backspace = false
+				    local hasFocused = false
 				
 				    local function blockMovement()
 				        return Enum.ContextActionResult.Sink
@@ -2296,29 +2295,31 @@ local library library = {
 				        inTextBox = false
 				    end)
 				
-					local function updateText()
-					    if textValue == nil or textValue == "" then
-					        value.Text = inputOptions.placeholder
-					        value.TextColor3 = Color3.fromRGB(178, 178, 178)
-					    else
-					        local displayText = textValue
-					        if canType then
-					            displayText = displayText .. (lastTickN == 1 and "|" or "")
-					        end
-					        value.Text = displayText
-					        value.TextColor3 = Color3.new(1, 1, 1)
-					    end
-					end
-					
+				    local function updateText()
+				        if textValue == nil or textValue == "" then
+				            value.Text = inputOptions.placeholder
+				            value.TextColor3 = Color3.fromRGB(178, 178, 178)
+				        else
+				            local displayText = textValue
+				            if canType then
+				                displayText = displayText .. (lastTickN == 1 and "|" or "")
+				            end
+				            value.Text = displayText
+				            value.TextColor3 = Color3.new(1, 1, 1)
+				        end
+				    end
+				
 				    mouse.InputBegan:Connect(function()
 				        if inTextBox and findBrowsingTopMost() == main then
 				            if not canType then
 				                canType = true
 				                disableMovement()
-				                if inputOptions.clearonfocus then
-							textValue = ""
-					    		updateText()
+				
+				                if inputOptions.clearonfocus and not hasFocused then
+				                    textValue = ""
+				                    hasFocused = true
 				                end
+				                updateText()
 				
 				                spawn(function()
 				                    while canType do
@@ -2386,6 +2387,7 @@ local library library = {
 				                self.event:Fire(textValue)
 				            end
 				
+				            -- Numbers
 				            if betweenOpenInterval(keycode.Value, 48, 57) then
 				                local name = rawget({
 				                    Zero = "0", One = "1", Two = "2", Three = "3", Four = "4",
@@ -2402,6 +2404,7 @@ local library library = {
 				                self.event:Fire(textValue)
 				            end
 				
+				            -- Letters
 				            if betweenOpenInterval(keycode.Value, 97, 122) then
 				                local name = (not shift) and keycode.Name:lower() or keycode.Name
 				                textValue = textValue .. name
@@ -2443,9 +2446,11 @@ local library library = {
 				    self.options = inputOptions
 				    self.self = input
 				
+				    -- Initial render
+				    updateText()
+				
 				    return self
 				end
-
 				
                 function types.dock(dockOptions)
                     local self = { }
