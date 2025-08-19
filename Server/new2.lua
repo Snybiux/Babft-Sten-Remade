@@ -462,7 +462,7 @@ do -- Load items
     Inner.Position = UDim2.new(0, 2, 0, 2)
     Inner.Size = UDim2.new(1, -4, 1, -4)
     Inner.Image = "rbxassetid://3570695787"
-    Inner.ImageColor3 = Color3.fromRGB(32, 59, 97)
+    Inner.ImageColor3 = Color3.fromRGB(176, 27, 16)
     Inner.ScaleType = Enum.ScaleType.Slice
     Inner.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner.SliceScale = 0.050
@@ -2099,8 +2099,8 @@ local library library = {
 
                         function dropdownObject.Destroy()
                             if rawget(dropdownObject, name) then
-                                inner:FindFirstChild("Value").Text = "[Selecte...]"
-                                dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = "[Selecte...]"
+                                inner:FindFirstChild("Value").Text = "[...]"
+                                dropdownWindow:FindFirstChild("Content"):FindFirstChild("Selected").Text = "[...]"
                             end
                             self.selected = nil
                             rawset(dropdownObject, name, nil)
