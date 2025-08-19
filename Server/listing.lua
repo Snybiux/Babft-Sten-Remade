@@ -19,8 +19,8 @@ Window.Name = "Window"
 Window.Position = UDim2.new(0, 715, 0, 40)
 Window.Size = UDim2.new(0, 240, 0, 500)
 Window.Image = "rbxassetid://2851926732"
-Window.ImageColor3 = BACKGROUND_COLOR
-Window.ImageTransparency = 0.08
+Window.ImageColor3 = Color3.fromRGB(16, 16, 16)
+Window.ImageTransparency = 0.04
 Window.ScaleType = Enum.ScaleType.Slice
 Window.SliceCenter = Rect.new(12, 12, 12, 12)
 Window.Active = true
@@ -99,7 +99,7 @@ local ClearButton = Instance.new("TextButton", Bar)
 ClearButton.Name = "Clear"
 ClearButton.Size = UDim2.new(0, 60, 0, 20)
 ClearButton.Position = UDim2.new(1, -64, 0, -1)
-ClearButton.BackgroundColor3 = Color3.fromRGB(230, 0, 0)
+ClearButton.BackgroundColor3 = Color3.fromRGB(122, 37, 37)
 ClearButton.Font = Enum.Font.GothamBold
 ClearButton.Text = "Clear"
 ClearButton.TextColor3 = TEXT_COLOR
@@ -107,7 +107,7 @@ ClearButton.TextSize = 13
 ClearButton.ZIndex = 99
 
 local UICorner = Instance.new("UICorner", ClearButton)
-UICorner.CornerRadius = UDim.new(0, 5)
+UICorner.CornerRadius = UDim.new(0, 3)
 
 -- Template block
 local ExampleBlock = Instance.new("Frame")
