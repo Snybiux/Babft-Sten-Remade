@@ -830,7 +830,7 @@ do -- Load items
     Inner_2.Position = UDim2.new(0, 2, 0, 2)
     Inner_2.Size = UDim2.new(1, -4, 1, -4)
     Inner_2.Image = "rbxassetid://3570695787"
-    Inner_2.ImageColor3 = Color3.fromRGB(41, 74, 122)
+    Inner_2.ImageColor3 = Color3.fromRGB(122, 41, 41)
     Inner_2.ScaleType = Enum.ScaleType.Slice
     Inner_2.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_2.SliceScale = 0.050
