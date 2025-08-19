@@ -2296,16 +2296,20 @@ local library library = {
 				        inTextBox = false
 				    end)
 				
-				    local function updateText()
-				        if textValue == nil or textValue == "" then
-				            value.Text = inputOptions.placeholder
-				            value.TextColor3 = Color3.fromRGB(178, 178, 178)
-				        else
-				            value.Text = textValue .. (lastTickN == 1 and "|" or "")
-				            value.TextColor3 = Color3.new(1, 1, 1)
-				        end
-				    end
-				
+					local function updateText()
+					    if textValue == nil or textValue == "" then
+					        value.Text = inputOptions.placeholder
+					        value.TextColor3 = Color3.fromRGB(178, 178, 178)
+					    else
+					        local displayText = textValue
+					        if canType then
+					            displayText = displayText .. (lastTickN == 1 and "|" or "")
+					        end
+					        value.Text = displayText
+					        value.TextColor3 = Color3.new(1, 1, 1)
+					    end
+					end
+					
 				    mouse.InputBegan:Connect(function()
 				        if inTextBox and findBrowsingTopMost() == main then
 				            if not canType then
