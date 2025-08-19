@@ -2312,7 +2312,7 @@ local library library = {
 				            value.TextColor3 = Color3.new(1, 1, 1)
 				        elseif textValue == "" then
 				            value.Text = inputOptions.placeholder
-				            value.TextColor3 = Color3.fromRGB(178, 178, 178)
+				            value.TextColor3 = Color3.fromRGB(255, 255, 255)
 				        else
 				            value.Text = textValue
 				            value.TextColor3 = Color3.new(1, 1, 1)
