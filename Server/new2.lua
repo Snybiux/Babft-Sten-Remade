@@ -2254,22 +2254,6 @@ local library library = {
                     local value = inner:FindFirstChild("Value")
                     local label = input:FindFirstChild("Text")
 
-                    -- Debug: Print all children to see what we're working with
-                    print("Input children:")
-                    for i, child in ipairs(input:GetChildren()) do
-                        print(i, child:GetFullName(), child.ClassName)
-                    end
-                    
-                    print("Outer children:")
-                    for i, child in ipairs(outer:GetChildren()) do
-                        print(i, child:GetFullName(), child.ClassName)
-                    end
-                    
-                    print("Inner children:")
-                    for i, child in ipairs(inner:GetChildren()) do
-                        print(i, child:GetFullName(), child.ClassName)
-                    end
-
                     -- Style the input
                     outer.SliceScale = inputOptions.rounding / 100
                     inner.SliceScale = inputOptions.rounding / 100
@@ -2292,23 +2276,32 @@ local library library = {
                     local cursorBlinkRate = 0.5
                     local lastCursorToggle = 0
 
-                    -- Movement blocking functions
-                    local function blockMovement()
-                        return Enum.ContextActionResult.Sink
-                    end
-
+                    -- Movement blocking functions (with error handling)
+                    local movementBlocked = false
+                    
                     local function disableMovement()
-                        ContextActionService:BindAction("BlockMovement", blockMovement, false,
-                            Enum.PlayerActions.CharacterForward,
-                            Enum.PlayerActions.CharacterBackward,
-                            Enum.PlayerActions.CharacterLeft,
-                            Enum.PlayerActions.CharacterRight,
-                            Enum.PlayerActions.CharacterJump
-                        )
+                        if not movementBlocked then
+                            movementBlocked = true
+                            pcall(function()
+                                ContextActionService:BindAction("BlockMovement", function()
+                                    return Enum.ContextActionResult.Sink
+                                end, false,
+                                Enum.PlayerActions.CharacterForward,
+                                Enum.PlayerActions.CharacterBackward,
+                                Enum.PlayerActions.CharacterLeft,
+                                Enum.PlayerActions.CharacterRight,
+                                Enum.PlayerActions.CharacterJump)
+                            end)
+                        end
                     end
 
                     local function enableMovement()
-                        ContextActionService:UnbindAction("BlockMovement")
+                        if movementBlocked then
+                            movementBlocked = false
+                            pcall(function()
+                                ContextActionService:UnbindAction("BlockMovement")
+                            end)
+                        end
                     end
 
                     -- Update the displayed text
@@ -2339,7 +2332,6 @@ local library library = {
 
                     -- Focus the input field
                     local function focusInput()
-                        print("Focusing input")
                         if not isFocused then
                             isFocused = true
                             disableMovement()
@@ -2355,7 +2347,7 @@ local library library = {
                             
                             -- Start cursor blinking
                             spawn(function()
-                                while isFocused do
+                                while isFocused and RunService do
                                     updateCursor()
                                     RunService.Heartbeat:Wait()
                                 end
@@ -2363,60 +2355,23 @@ local library library = {
                         end
                     end
 
-                    -- Unfocus the input field
+                    -- Unfocus the input field (with error handling)
                     local function unfocusInput()
-                        print("Unfocusing input")
                         if isFocused then
                             isFocused = false
                             cursorVisible = false
                             enableMovement()
-                            self.event:Fire(textValue)
+                            
+                            -- Safe event firing
+                            pcall(function()
+                                self.event:Fire(textValue)
+                            end)
+                            
                             updateDisplay()
                         end
                     end
 
-                    -- SIMPLE CLICK DETECTION - Let's try the most basic approach
-                    print("Setting up click detection...")
-                    
-                    -- Method 1: Try using InputBegan on the inner element if it supports it
-                    local success, errorMsg = pcall(function()
-                        inner.InputBegan:Connect(function(inputObject)
-                            if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
-                                print("Inner clicked!")
-                                focusInput()
-                            end
-                        end)
-                    end)
-                    
-                    if not success then
-                        print("Inner.InputBegan failed:", errorMsg)
-                    end
-                    
-                    -- Method 2: Try MouseButton1Click on inner
-                    success, errorMsg = pcall(function()
-                        inner.MouseButton1Click:Connect(function()
-                            print("Inner MouseButton1Click!")
-                            focusInput()
-                        end)
-                    end)
-                    
-                    if not success then
-                        print("Inner.MouseButton1Click failed:", errorMsg)
-                    end
-                    
-                    -- Method 3: Try MouseButton1Down on inner (most basic)
-                    success, errorMsg = pcall(function()
-                        inner.MouseButton1Down:Connect(function()
-                            print("Inner MouseButton1Down!")
-                            focusInput()
-                        end)
-                    end)
-                    
-                    if not success then
-                        print("Inner.MouseButton1Down failed:", errorMsg)
-                    end
-                    
-                    -- Method 4: Add a transparent TextButton as overlay
+                    -- Add a transparent TextButton as overlay for click detection
                     local clickButton = Instance.new("TextButton")
                     clickButton.Name = "InputClickHandler"
                     clickButton.BackgroundTransparency = 1
@@ -2427,39 +2382,34 @@ local library library = {
                     clickButton.Parent = inner
                     
                     clickButton.MouseButton1Down:Connect(function()
-                        print("Overlay button clicked!")
                         focusInput()
                     end)
                     
-                    -- Method 5: Global click detection as fallback
+                    -- Global click detection for unfocusing
                     UserInputService.InputBegan:Connect(function(inputObject)
                         if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
-                            local mousePos = UserInputService:GetMouseLocation()
-                            local absPos = input.AbsolutePosition
-                            local absSize = input.AbsoluteSize
-                            
-                            local isInside = mousePos.X >= absPos.X and 
-                                        mousePos.X <= absPos.X + absSize.X and
-                                        mousePos.Y >= absPos.Y and 
-                                        mousePos.Y <= absPos.Y + absSize.Y
-                            
-                            if isInside then
-                                print("Global click detection: Inside input!")
-                                if findBrowsingTopMost() == main then
-                                    focusInput()
+                            if isFocused then
+                                local mousePos = UserInputService:GetMouseLocation()
+                                local absPos = input.AbsolutePosition
+                                local absSize = input.AbsoluteSize
+                                
+                                local isInside = mousePos.X >= absPos.X and 
+                                            mousePos.X <= absPos.X + absSize.X and
+                                            mousePos.Y >= absPos.Y and 
+                                            mousePos.Y <= absPos.Y + absSize.Y
+                                
+                                if not isInside then
+                                    unfocusInput()
                                 end
-                            elseif isFocused then
-                                unfocusInput()
                             end
                         end
                     end)
 
-                    -- Handle keyboard input
+                    -- Handle keyboard input (with better error handling)
                     UserInputService.InputBegan:Connect(function(inputObject)
                         if not isFocused then return end
                         
                         local keycode = inputObject.KeyCode
-                        print("Key pressed:", keycode.Name)
                         
                         -- Enter to confirm
                         if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
@@ -2467,11 +2417,16 @@ local library library = {
                             return
                         end
                         
+                        -- Tab key (might be causing the "Unknown" key press)
+                        if keycode == Enum.KeyCode.Tab then
+                            return
+                        end
+                        
                         -- Backspace handling
                         if keycode == Enum.KeyCode.Backspace then
                             textValue = textValue:sub(1, -2)
                             updateDisplay()
-                            self.event:Fire(textValue)
+                            pcall(function() self.event:Fire(textValue) end)
                             return
                         end
                         
@@ -2479,37 +2434,45 @@ local library library = {
                         if keycode == Enum.KeyCode.Space then
                             textValue = textValue .. " "
                             updateDisplay()
-                            self.event:Fire(textValue)
+                            pcall(function() self.event:Fire(textValue) end)
                             return
                         end
                         
-                        -- Handle alphanumeric input
-                        if keycode.Value >= 48 and keycode.Value <= 90 then  -- 0-9, A-Z
+                        -- Handle alphanumeric input (only process known keys)
+                        local knownKeys = {
+                            [Enum.KeyCode.Zero] = "0", [Enum.KeyCode.One] = "1", [Enum.KeyCode.Two] = "2",
+                            [Enum.KeyCode.Three] = "3", [Enum.KeyCode.Four] = "4", [Enum.KeyCode.Five] = "5",
+                            [Enum.KeyCode.Six] = "6", [Enum.KeyCode.Seven] = "7", [Enum.KeyCode.Eight] = "8",
+                            [Enum.KeyCode.Nine] = "9", [Enum.KeyCode.A] = "a", [Enum.KeyCode.B] = "b",
+                            [Enum.KeyCode.C] = "c", [Enum.KeyCode.D] = "d", [Enum.KeyCode.E] = "e",
+                            [Enum.KeyCode.F] = "f", [Enum.KeyCode.G] = "g", [Enum.KeyCode.H] = "h",
+                            [Enum.KeyCode.I] = "i", [Enum.KeyCode.J] = "j", [Enum.KeyCode.K] = "k",
+                            [Enum.KeyCode.L] = "l", [Enum.KeyCode.M] = "m", [Enum.KeyCode.N] = "n",
+                            [Enum.KeyCode.O] = "o", [Enum.KeyCode.P] = "p", [Enum.KeyCode.Q] = "q",
+                            [Enum.KeyCode.R] = "r", [Enum.KeyCode.S] = "s", [Enum.KeyCode.T] = "t",
+                            [Enum.KeyCode.U] = "u", [Enum.KeyCode.V] = "v", [Enum.KeyCode.W] = "w",
+                            [Enum.KeyCode.X] = "x", [Enum.KeyCode.Y] = "y", [Enum.KeyCode.Z] = "z",
+                        }
+                        
+                        if knownKeys[keycode] then
                             local shift = UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or 
                                         UserInputService:IsKeyDown(Enum.KeyCode.RightShift)
                             
-                            local char = ""
-                            
-                            -- Numbers
-                            if keycode.Value >= 48 and keycode.Value <= 57 then
-                                local numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-                                char = numbers[keycode.Value - 47]
+                            local char = knownKeys[keycode]
+                            if shift then
+                                char = char:upper()
                                 
-                                if shift then
-                                    local symbols = {")", "!", "@", "#", "$", "%", "^", "&", "*", "("}
-                                    char = symbols[keycode.Value - 47]
-                                end
-                            -- Letters
-                            elseif keycode.Value >= 65 and keycode.Value <= 90 then
-                                char = keycode.Name:sub(1, 1) .. keycode.Name:sub(2):lower()
-                                if not shift then
-                                    char = char:lower()
-                                end
+                                -- Handle number symbols when shift is pressed
+                                local numberSymbols = {
+                                    ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$",
+                                    ["5"] = "%", ["6"] = "^", ["7"] = "&", ["8"] = "*", ["9"] = "("
+                                }
+                                char = numberSymbols[char] or char
                             end
                             
                             textValue = textValue .. char
                             updateDisplay()
-                            self.event:Fire(textValue)
+                            pcall(function() self.event:Fire(textValue) end)
                         end
                     end)
 
@@ -2548,8 +2511,6 @@ local library library = {
 
                     -- Initial display
                     updateDisplay()
-                    
-                    print("Input field created successfully")
 
                     return self
                 end
