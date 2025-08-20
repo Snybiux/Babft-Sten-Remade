@@ -2246,8 +2246,8 @@ local library library = {
                     -- Create input UI elements
                     local input = new("Dropdown")
                     input.Parent = items
-                    input.BackgroundTransparency = 1  -- Make the entire frame transparent to see children
-                    input.Size = UDim2.new(0, 0, 0, 20)  -- Will be resized later
+                    input.BackgroundTransparency = 1
+                    input.Size = UDim2.new(0, 0, 0, 20)
 
                     local outer = input:FindFirstChild("Outer")
                     local inner = outer:FindFirstChild("Inner")
@@ -2261,7 +2261,7 @@ local library library = {
                     
                     -- Set up text and sizing
                     label.Text = inputOptions.text
-                    outer.Size = UDim2.new(0, inputOptions.size, 1, 0)  -- Fill vertical space
+                    outer.Size = UDim2.new(0, inputOptions.size, 1, 0)
                     label.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
                     
                     -- Calculate proper width based on label text
@@ -2357,38 +2357,30 @@ local library library = {
                         end
                     end
 
-                    -- Make the entire input area clickable
-                    input.MouseButton1Click:Connect(function()
-                        if findBrowsingTopMost() == main then
-                            focusInput()
-                        end
-                    end)
-
-                    -- Also allow clicking on the inner area
-                    inner.MouseButton1Click:Connect(function()
-                        if findBrowsingTopMost() == main then
-                            focusInput()
-                        end
-                    end)
-
-                    -- Handle clicking outside to unfocus
-                    UserInputService.InputBegan:Connect(function(inputObject)
-                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 and isFocused then
+                    -- FIXED: Use InputBegan instead of MouseButton1Click for better compatibility
+                    local function onInputBegan(inputObject)
+                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
                             local mousePos = UserInputService:GetMouseLocation()
                             local absPos = input.AbsolutePosition
                             local absSize = input.AbsoluteSize
                             
-                            -- Check if click is outside the input
-                            local isOutside = mousePos.X < absPos.X or 
-                                            mousePos.X > absPos.X + absSize.X or
-                                            mousePos.Y < absPos.Y or 
-                                            mousePos.Y > absPos.Y + absSize.Y
+                            -- Check if click is inside the input
+                            local isInside = mousePos.X >= absPos.X and 
+                                        mousePos.X <= absPos.X + absSize.X and
+                                        mousePos.Y >= absPos.Y and 
+                                        mousePos.Y <= absPos.Y + absSize.Y
                             
-                            if isOutside then
+                            if isInside and findBrowsingTopMost() == main then
+                                focusInput()
+                            elseif isFocused then
+                                -- Clicked outside while focused
                                 unfocusInput()
                             end
                         end
-                    end)
+                    end
+
+                    -- Connect input events using InputBegan which is more reliable
+                    UserInputService.InputBegan:Connect(onInputBegan)
 
                     -- Handle keyboard input
                     UserInputService.InputBegan:Connect(function(inputObject)
@@ -2428,7 +2420,7 @@ local library library = {
                             -- Numbers
                             if keycode.Value >= 48 and keycode.Value <= 57 then
                                 local numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-                                char = numbers[keycode.Value - 47] -- 48 (Zero) becomes index 1
+                                char = numbers[keycode.Value - 47]
                                 
                                 if shift then
                                     local symbols = {")", "!", "@", "#", "$", "%", "^", "&", "*", "("}
@@ -2468,6 +2460,14 @@ local library library = {
 
                     function self:Destroy()
                         input:Destroy()
+                    end
+
+                    function self.focus()
+                        focusInput()
+                    end
+
+                    function self.unfocus()
+                        unfocusInput()
                     end
 
                     self.options = inputOptions
