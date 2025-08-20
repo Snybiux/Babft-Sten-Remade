@@ -2357,30 +2357,42 @@ local library library = {
                         end
                     end
 
-                    -- FIXED: Use InputBegan instead of MouseButton1Click for better compatibility
-                    local function onInputBegan(inputObject)
-                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+                    -- FIX: Use the most basic click detection that should work with any UI element
+                    -- Create a transparent button overlay that will handle clicks
+                    local clickDetector = Instance.new("TextButton")
+                    clickDetector.Name = "InputClickDetector"
+                    clickDetector.BackgroundTransparency = 1
+                    clickDetector.Text = ""
+                    clickDetector.Size = UDim2.new(1, 0, 1, 0)
+                    clickDetector.Position = UDim2.new(0, 0, 0, 0)
+                    clickDetector.ZIndex = 10
+                    clickDetector.Parent = input
+
+                    -- Use MouseButton1Down which should work on TextButton
+                    clickDetector.MouseButton1Down:Connect(function()
+                        if findBrowsingTopMost() == main then
+                            focusInput()
+                        end
+                    end)
+
+                    -- Handle clicking outside to unfocus
+                    UserInputService.InputBegan:Connect(function(inputObject)
+                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 and isFocused then
                             local mousePos = UserInputService:GetMouseLocation()
                             local absPos = input.AbsolutePosition
                             local absSize = input.AbsoluteSize
                             
-                            -- Check if click is inside the input
-                            local isInside = mousePos.X >= absPos.X and 
-                                        mousePos.X <= absPos.X + absSize.X and
-                                        mousePos.Y >= absPos.Y and 
-                                        mousePos.Y <= absPos.Y + absSize.Y
+                            -- Check if click is outside the input
+                            local isOutside = mousePos.X < absPos.X or 
+                                            mousePos.X > absPos.X + absSize.X or
+                                            mousePos.Y < absPos.Y or 
+                                            mousePos.Y > absPos.Y + absSize.Y
                             
-                            if isInside and findBrowsingTopMost() == main then
-                                focusInput()
-                            elseif isFocused then
-                                -- Clicked outside while focused
+                            if isOutside then
                                 unfocusInput()
                             end
                         end
-                    end
-
-                    -- Connect input events using InputBegan which is more reliable
-                    UserInputService.InputBegan:Connect(onInputBegan)
+                    end)
 
                     -- Handle keyboard input
                     UserInputService.InputBegan:Connect(function(inputObject)
