@@ -43,6 +43,7 @@ Toggle.Position = UDim2.new(0, 5, 0, -2)
 Toggle.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=4731371541"
 Toggle.BackgroundTransparency = 1
 Toggle.ZIndex = 12
+Toggle.Rotation = 90
 
 local Base = Instance.new("ImageLabel", Bar)
 Base.Name = "Base"
