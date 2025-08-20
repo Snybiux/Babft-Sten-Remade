@@ -2447,11 +2447,11 @@ local library library = {
                                     char = shiftNumbers[char] or char
                                 end
                             end
-                            
-                            -- Letters
-                            if keycode.Value >= 65 and keycode.Value <= 90 then
-                                char = shift and keycode.Name or keycode.Name:lower()
-                            end
+
+							-- Letters
+							if keycode.Name:match("^[A-Z]$") then
+							    char = shift and keycode.Name or keycode.Name:lower()
+							end
                             
                             -- Add character if valid
                             if char then
