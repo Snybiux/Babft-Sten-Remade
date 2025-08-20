@@ -2254,6 +2254,22 @@ local library library = {
                     local value = inner:FindFirstChild("Value")
                     local label = input:FindFirstChild("Text")
 
+                    -- Debug: Print all children to see what we're working with
+                    print("Input children:")
+                    for i, child in ipairs(input:GetChildren()) do
+                        print(i, child:GetFullName(), child.ClassName)
+                    end
+                    
+                    print("Outer children:")
+                    for i, child in ipairs(outer:GetChildren()) do
+                        print(i, child:GetFullName(), child.ClassName)
+                    end
+                    
+                    print("Inner children:")
+                    for i, child in ipairs(inner:GetChildren()) do
+                        print(i, child:GetFullName(), child.ClassName)
+                    end
+
                     -- Style the input
                     outer.SliceScale = inputOptions.rounding / 100
                     inner.SliceScale = inputOptions.rounding / 100
@@ -2323,6 +2339,7 @@ local library library = {
 
                     -- Focus the input field
                     local function focusInput()
+                        print("Focusing input")
                         if not isFocused then
                             isFocused = true
                             disableMovement()
@@ -2348,6 +2365,7 @@ local library library = {
 
                     -- Unfocus the input field
                     local function unfocusInput()
+                        print("Unfocusing input")
                         if isFocused then
                             isFocused = false
                             cursorVisible = false
@@ -2357,38 +2375,80 @@ local library library = {
                         end
                     end
 
-                    -- FIX: Use the most basic click detection that should work with any UI element
-                    -- Create a transparent button overlay that will handle clicks
-                    local clickDetector = Instance.new("TextButton")
-                    clickDetector.Name = "InputClickDetector"
-                    clickDetector.BackgroundTransparency = 1
-                    clickDetector.Text = ""
-                    clickDetector.Size = UDim2.new(1, 0, 1, 0)
-                    clickDetector.Position = UDim2.new(0, 0, 0, 0)
-                    clickDetector.ZIndex = 10
-                    clickDetector.Parent = input
-
-                    -- Use MouseButton1Down which should work on TextButton
-                    clickDetector.MouseButton1Down:Connect(function()
-                        if findBrowsingTopMost() == main then
-                            focusInput()
-                        end
+                    -- SIMPLE CLICK DETECTION - Let's try the most basic approach
+                    print("Setting up click detection...")
+                    
+                    -- Method 1: Try using InputBegan on the inner element if it supports it
+                    local success, errorMsg = pcall(function()
+                        inner.InputBegan:Connect(function(inputObject)
+                            if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+                                print("Inner clicked!")
+                                focusInput()
+                            end
+                        end)
                     end)
-
-                    -- Handle clicking outside to unfocus
+                    
+                    if not success then
+                        print("Inner.InputBegan failed:", errorMsg)
+                    end
+                    
+                    -- Method 2: Try MouseButton1Click on inner
+                    success, errorMsg = pcall(function()
+                        inner.MouseButton1Click:Connect(function()
+                            print("Inner MouseButton1Click!")
+                            focusInput()
+                        end)
+                    end)
+                    
+                    if not success then
+                        print("Inner.MouseButton1Click failed:", errorMsg)
+                    end
+                    
+                    -- Method 3: Try MouseButton1Down on inner (most basic)
+                    success, errorMsg = pcall(function()
+                        inner.MouseButton1Down:Connect(function()
+                            print("Inner MouseButton1Down!")
+                            focusInput()
+                        end)
+                    end)
+                    
+                    if not success then
+                        print("Inner.MouseButton1Down failed:", errorMsg)
+                    end
+                    
+                    -- Method 4: Add a transparent TextButton as overlay
+                    local clickButton = Instance.new("TextButton")
+                    clickButton.Name = "InputClickHandler"
+                    clickButton.BackgroundTransparency = 1
+                    clickButton.Text = ""
+                    clickButton.Size = UDim2.new(1, 0, 1, 0)
+                    clickButton.Position = UDim2.new(0, 0, 0, 0)
+                    clickButton.ZIndex = 5
+                    clickButton.Parent = inner
+                    
+                    clickButton.MouseButton1Down:Connect(function()
+                        print("Overlay button clicked!")
+                        focusInput()
+                    end)
+                    
+                    -- Method 5: Global click detection as fallback
                     UserInputService.InputBegan:Connect(function(inputObject)
-                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 and isFocused then
+                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
                             local mousePos = UserInputService:GetMouseLocation()
                             local absPos = input.AbsolutePosition
                             local absSize = input.AbsoluteSize
                             
-                            -- Check if click is outside the input
-                            local isOutside = mousePos.X < absPos.X or 
-                                            mousePos.X > absPos.X + absSize.X or
-                                            mousePos.Y < absPos.Y or 
-                                            mousePos.Y > absPos.Y + absSize.Y
+                            local isInside = mousePos.X >= absPos.X and 
+                                        mousePos.X <= absPos.X + absSize.X and
+                                        mousePos.Y >= absPos.Y and 
+                                        mousePos.Y <= absPos.Y + absSize.Y
                             
-                            if isOutside then
+                            if isInside then
+                                print("Global click detection: Inside input!")
+                                if findBrowsingTopMost() == main then
+                                    focusInput()
+                                end
+                            elseif isFocused then
                                 unfocusInput()
                             end
                         end
@@ -2399,6 +2459,7 @@ local library library = {
                         if not isFocused then return end
                         
                         local keycode = inputObject.KeyCode
+                        print("Key pressed:", keycode.Name)
                         
                         -- Enter to confirm
                         if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
@@ -2487,6 +2548,8 @@ local library library = {
 
                     -- Initial display
                     updateDisplay()
+                    
+                    print("Input field created successfully")
 
                     return self
                 end
