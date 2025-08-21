@@ -2225,7 +2225,7 @@ local library library = {
                     return self
                 end
 
-                function types.input(inputOptions)
+                function types.input(inputOptions) -- Yes the Input is Chat Gpt, im not a ui developer and i dont wanna waste my time on it.
                     local self = {}
                     
                     local ContextActionService = game:GetService("ContextActionService")
@@ -2448,10 +2448,30 @@ local library library = {
                                 end
                             end
 
-							-- Letters
-							if keycode.Name:match("^[A-Z]$") then
-							    char = shift and keycode.Name or keycode.Name:lower()
-							end
+                            -- Letters
+                            if keycode.Name:match("^[A-Z]$") then
+                                char = shift and keycode.Name or keycode.Name:lower()
+                            end
+                            
+                            -- Punctuation and special characters
+                            local punctuationMap = {
+                                [Enum.KeyCode.Comma] = {normal = ",", shift = "<"},
+                                [Enum.KeyCode.Period] = {normal = ".", shift = ">"},
+                                [Enum.KeyCode.Semicolon] = {normal = ";", shift = ":"},
+                                [Enum.KeyCode.Quote] = {normal = "'", shift = "\""},
+                                [Enum.KeyCode.LeftBracket] = {normal = "[", shift = "{"},
+                                [Enum.KeyCode.RightBracket] = {normal = "]", shift = "}"},
+                                [Enum.KeyCode.BackSlash] = {normal = "\\", shift = "|"},
+                                [Enum.KeyCode.Slash] = {normal = "/", shift = "?"},
+                                [Enum.KeyCode.Minus] = {normal = "-", shift = "_"},
+                                [Enum.KeyCode.Equals] = {normal = "=", shift = "+"},
+                                [Enum.KeyCode.Tilde] = {normal = "`", shift = "~"}
+                            }
+                            
+                            -- Check for punctuation keys
+                            if punctuationMap[keycode] then
+                                char = shift and punctuationMap[keycode].shift or punctuationMap[keycode].normal
+                            end
                             
                             -- Add character if valid
                             if char then
