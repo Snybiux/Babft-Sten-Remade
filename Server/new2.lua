@@ -2401,7 +2401,7 @@ local library library = {
                             end
                             
                             -- TextBox zurücksetzen für weitere Eingaben
-                            textBox.Text = ""
+                            --textBox.Text = ""
                         end
                     end)
                     
