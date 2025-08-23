@@ -2225,7 +2225,7 @@ local library library = {
                     return self
                 end
 
-                function types.input(inputOptions) -- Yes the Input is Chat Gpt, im not a ui developer and i dont wanna waste my time on it.
+                function types.input(inputOptions)
                     local self = {}
                     
                     local ContextActionService = game:GetService("ContextActionService")
@@ -2297,6 +2297,23 @@ local library library = {
                     
                     local function enableMovement()
                         ContextActionService:UnbindAction("BlockMovement")
+                    end
+                    
+                    -- Handle paste from clipboard
+                    local function handlePaste()
+                        if canType then
+                            local success, result = pcall(function()
+                                return UserInputService:GetStringFromClipboard()
+                            end)
+                            
+                            if success and result and typeof(result) == "string" then
+                                textValue = textValue .. result
+                                updateTextDisplay()
+                                self.event:Fire(textValue)
+                                return true
+                            end
+                        end
+                        return false
                     end
                     
                     -- Cursor blinking animation
@@ -2372,6 +2389,13 @@ local library library = {
                     -- Handle keyboard input
                     UserInputService.InputBegan:Connect(function(inputObject)
                         local keycode = inputObject.KeyCode
+                        
+                        -- Strg+V Handling für Einfügen
+                        if (keycode == Enum.KeyCode.V and (UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or 
+                                                        UserInputService:IsKeyDown(Enum.KeyCode.RightControl))) then
+                            handlePaste()
+                            return
+                        end
                         
                         if keycode == Enum.KeyCode.LeftShift or keycode == Enum.KeyCode.RightShift then
                             shift = true
