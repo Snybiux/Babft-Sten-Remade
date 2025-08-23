@@ -2257,14 +2257,16 @@ local library library = {
                     
                     -- Unsichtbare TextBox für Eingaben
                     local textBox = Instance.new("TextBox")
-                    textBox.Size = UDim2.new(0, 0, 0, 0)
-                    textBox.Position = UDim2.new(-10, 0, -10, 0) -- Außerhalb des Bildschirms
+                    textBox.Size = UDim2.new(1, -10, 1, -4)
+                    textBox.Position = UDim2.new(0, 5, 0, 2)
                     textBox.BackgroundTransparency = 1
                     textBox.Text = ""
                     textBox.TextColor3 = Color3.new(0, 0, 0)
+                    textBox.TextTransparency = 1 -- Vollständig transparent
                     textBox.ClearTextOnFocus = false
+                    textBox.TextXAlignment = Enum.TextXAlignment.Left
                     textBox.Parent = inner
-                    textBox.Visible = false
+                    textBox.ZIndex = value.ZIndex + 1
                     
                     -- Style the input
                     outer.SliceScale = inputOptions.rounding / 100
@@ -2279,8 +2281,6 @@ local library library = {
                     -- Input state management
                     local textValue = ""
                     local canType = false
-                    local shift = false
-                    local ctrl = false
                     local hasFocused = false
                     
                     -- Cursor state
@@ -2357,12 +2357,23 @@ local library library = {
                                 
                                 if inputOptions.clearonfocus and not hasFocused then
                                     textValue = ""
+                                    textBox.Text = ""
                                     hasFocused = true
                                 end
                                 
                                 -- TextBox für Eingaben aktivieren
                                 textBox.Visible = true
-                                textBox:CaptureFocus()
+                                
+                                -- Setze den Text der TextBox auf den aktuellen Wert
+                                textBox.Text = textValue
+                                
+                                -- Fokussiere die TextBox mit einer kleinen Verzögerung
+                                spawn(function()
+                                    wait(0.05)
+                                    if canType then
+                                        textBox:CaptureFocus()
+                                    end
+                                end)
                                 
                                 -- Start cursor blinking
                                 spawn(function()
@@ -2382,12 +2393,11 @@ local library library = {
                     end)
                     
                     -- TextBox Event-Handler
-                    textBox.FocusLost:Connect(function()
+                    textBox.FocusLost:Connect(function(enterPressed)
                         canType = false
                         showCursor = false
-                        textBox.Visible = false
-                        self.event:Fire(textValue)
                         updateTextDisplay()
+                        self.event:Fire(textValue, enterPressed)
                     end)
                     
                     textBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -2397,17 +2407,36 @@ local library library = {
                             if #newText <= inputOptions.maxlength then
                                 textValue = newText
                                 updateTextDisplay()
-                                self.event:Fire(textValue)
+                                self.event:Fire(textValue, false)
+                            else
+                                -- Text begrenzen, wenn er zu lang ist
+                                textBox.Text = textValue
                             end
-                            
-                            -- TextBox zurücksetzen für weitere Eingaben
-                            textBox.Text = ""
                         end
                     end)
                     
-                    -- Handle special keys in TextBox
-                    textBox.Focused:Connect(function()
-                        textBox.Text = "" -- Clear when focused to capture new input
+                    -- Handle Enter key to confirm
+                    textBox.FocusLost:Connect(function(enterPressed)
+                        if enterPressed then
+                            self.event:Fire(textValue, true)
+                        end
+                    end)
+                    
+                    -- Handle click outside to lose focus
+                    UserInputService.InputBegan:Connect(function(inputObject)
+                        if inputObject.UserInputType == Enum.UserInputType.MouseButton1 and canType then
+                            local mousePos = UserInputService:GetMouseLocation()
+                            local absPos = inner.AbsolutePosition
+                            local absSize = inner.AbsoluteSize
+                            
+                            -- Check if click is outside the input
+                            local insideInput = mousePos.X >= absPos.X and mousePos.X <= absPos.X + absSize.X and
+                                            mousePos.Y >= absPos.Y and mousePos.Y <= absPos.Y + absSize.Y
+                            
+                            if not insideInput then
+                                textBox:ReleaseFocus()
+                            end
+                        end
                     end)
                     
                     -- Utility functions
