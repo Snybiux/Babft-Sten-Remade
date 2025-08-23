@@ -462,7 +462,7 @@ do -- Load items
     Inner.Position = UDim2.new(0, 2, 0, 2)
     Inner.Size = UDim2.new(1, -4, 1, -4)
     Inner.Image = "rbxassetid://3570695787"
-    Inner.ImageColor3 = Color3.fromRGB(176, 27, 16)
+    Inner.ImageColor3 = Color3.fromRGB(32, 59, 97)
     Inner.ScaleType = Enum.ScaleType.Slice
     Inner.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner.SliceScale = 0.050
@@ -830,10 +830,17 @@ do -- Load items
     Inner_2.Position = UDim2.new(0, 2, 0, 2)
     Inner_2.Size = UDim2.new(1, -4, 1, -4)
     Inner_2.Image = "rbxassetid://3570695787"
-    Inner_2.ImageColor3 = Color3.fromRGB(122, 41, 41)
+    Inner_2.ImageColor3 = Color3.fromRGB(32, 59, 97)
     Inner_2.ScaleType = Enum.ScaleType.Slice
     Inner_2.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_2.SliceScale = 0.050
+
+    ImageLabel_7.Parent = Inner_2
+    ImageLabel_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageLabel_7.BackgroundTransparency = 1.000
+    ImageLabel_7.Position = UDim2.new(0, 5, 1, -16)
+    ImageLabel_7.Size = UDim2.new(0, 16, 0, 16)
+    ImageLabel_7.Image = "rbxassetid://11146003594"
 
     TextBox.Name = "TextBox"
     TextBox.Parent = Inner_2
@@ -1063,10 +1070,17 @@ do -- Load items
     Inner_3.Position = UDim2.new(0, 2, 0, 2)
     Inner_3.Size = UDim2.new(1, -4, 1, -4)
     Inner_3.Image = "rbxassetid://3570695787"
-    Inner_3.ImageColor3 = Color3.fromRGB(176, 27, 16)
+    Inner_3.ImageColor3 = Color3.fromRGB(32, 59, 97)
     Inner_3.ScaleType = Enum.ScaleType.Slice
     Inner_3.SliceCenter = Rect.new(100, 100, 100, 100)
     Inner_3.SliceScale = 0.050
+
+    ImageLabel_8.Parent = Inner_3
+    ImageLabel_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageLabel_8.BackgroundTransparency = 1.000
+    ImageLabel_8.Position = UDim2.new(1, -26, 1, -16)
+    ImageLabel_8.Size = UDim2.new(0, 16, 0, 16)
+    ImageLabel_8.Image = "rbxassetid://11145100810"
 
     Value_2.Name = "Value"
     Value_2.Parent = Inner_3
@@ -1974,9 +1988,9 @@ local library library = {
                     dropdownOptions = settings.new({
                         text = "New Dropdown",
                         size = 150,
-                        color = Color3.fromRGB(176, 27, 16),
+                        color = Color3.fromRGB(32, 59, 97),
                         rounding = options.rounding,
-                        selectioncolor = Color3.fromRGB(176, 27, 16),
+                        selectioncolor = Color3.fromRGB(32, 59, 97),
                     }).handle(dropdownOptions)
 
                     local dropdownButton = new("Dropdown")
@@ -1992,7 +2006,7 @@ local library library = {
                     inner.ImageColor3 = dropdownOptions.color
                     outer.SliceScale = dropdownOptions.rounding / 100
                     inner.SliceScale = dropdownOptions.rounding / 100
-                    inner:FindFirstChild("Value").Text = "[Selecte...]"
+                    inner:FindFirstChild("Value").Text = "[...]"
 
                     text.Text = dropdownOptions.text
                     dropdownWindow:FindFirstChild("Title").Text = dropdownOptions.text
@@ -2107,6 +2121,15 @@ local library library = {
                         end
 
                         return dropdownObject
+                    end
+
+                    function self.search(key)
+                        for name, dropdownObject in next, dropdownObjects do
+                            dropdownObject.object.Parent = dropdownWindow:FindFirstChild("Cache")
+                            if dropdownObject.name:match(key) then
+                                dropdownObject.object.Parent = dropdownItems
+                            end
+                        end
                     end
 
                     do -- search bar
@@ -2421,6 +2444,21 @@ local library library = {
                     
                     return self
                 end
+
+                function types.dock(dockOptions)
+                    local self = { }
+
+                    dockOptions = settings.new({
+                    }).handle(dockOptions)
+
+                    local dock = new("Dock")
+                    dock.Parent = items
+
+                    dock.ChildAdded:Connect(function()
+                        local size = countSize(dock, true).X
+                        dock.Size = UDim2.new(0, size, 0, 22)
+                        updateCanvas()
+                    end)
 
                     function self.new(type, typeOptions)
                         assert(typeof(type) == "string", "expected string as #1 argument")
