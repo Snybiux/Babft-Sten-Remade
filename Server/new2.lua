@@ -2227,14 +2227,14 @@ local library library = {
 
                 function types.input(inputOptions)
                     local self = {}
-                    
+
                     local ContextActionService = game:GetService("ContextActionService")
                     local UserInputService = game:GetService("UserInputService")
                     local RunService = game:GetService("RunService")
-                    
+
                     self.event = event.new()
                     self.eventBlock = false
-                    
+
                     inputOptions = settings.new({
                         text = "New Input",
                         placeholder = "Enter text...",
@@ -2243,48 +2243,44 @@ local library library = {
                         clearonfocus = true,
                         size = 150,
                     }).handle(inputOptions)
-                    
+
                     local input = new("Dropdown")
                     input.Parent = items
-                    
+
                     local outer = input:FindFirstChild("Outer")
                     local inner = outer:FindFirstChild("Inner")
                     local value = inner:FindFirstChild("Value")
                     local label = input:FindFirstChild("Text")
-                    
-                    -- Clean up any duplicate text elements
+
                     for _, child in ipairs(input:GetDescendants()) do
                         if child:IsA("TextLabel") and child ~= value and child ~= label then
                             child.Visible = false
                             child.Text = ""
                         end
                     end
-                    
-                    -- Style the input
+
                     outer.SliceScale = inputOptions.rounding / 100
                     inner.SliceScale = inputOptions.rounding / 100
                     inner.ImageColor3 = inputOptions.color
-                    
+
                     label.Text = inputOptions.text
                     outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
                     label.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
                     input.Size = UDim2.new(0, inputOptions.size + 8 + label.TextBounds.X, 0, 20)
-                    
-                    -- Input state management
+
                     local textValue = ""
                     local canType = false
                     local shift = false
                     local backspace = false
                     local hasFocused = false
-                    
-                    -- Make the entire inner area clickable
+
                     inner.Active = true
                     inner.AutoButtonColor = false
-                    
+
                     local function blockMovement()
                         return Enum.ContextActionResult.Sink
                     end
-                    
+
                     local function disableMovement()
                         ContextActionService:BindAction("BlockMovement", blockMovement, false,
                             Enum.PlayerActions.CharacterForward,
@@ -2294,61 +2290,38 @@ local library library = {
                             Enum.PlayerActions.CharacterJump
                         )
                     end
-                    
+
                     local function enableMovement()
                         ContextActionService:UnbindAction("BlockMovement")
                     end
-                    
-                    -- Handle paste from clipboard
-                    local function handlePaste()
-                        if canType then
-                            local success, result = pcall(function()
-                                return UserInputService:GetStringFromClipboard()
-                            end)
-                            
-                            if success and result and typeof(result) == "string" then
-                                textValue = textValue .. result
-                                updateTextDisplay()
-                                self.event:Fire(textValue)
-                                return true
-                            end
-                        end
-                        return false
-                    end
-                    
-                    -- Cursor blinking animation
+
                     local lastTick = tick()
                     local showCursor = false
-                    
+
                     local function updateTextDisplay()
                         if canType then
-                            -- Show text with blinking cursor
                             value.Text = textValue .. (showCursor and "|" or "")
                             value.TextColor3 = Color3.new(1, 1, 1)
                         elseif textValue == "" then
-                            -- Show placeholder text
                             value.Text = inputOptions.placeholder
                             value.TextColor3 = Color3.fromRGB(178, 178, 178)
                         else
-                            -- Show entered text without cursor
                             value.Text = textValue
                             value.TextColor3 = Color3.new(1, 1, 1)
                         end
                     end
-                    
-                    -- Handle click to focus
+
                     inner.MouseButton1Click:Connect(function()
                         if findBrowsingTopMost() == main then
                             if not canType then
                                 canType = true
                                 disableMovement()
-                                
+
                                 if inputOptions.clearonfocus and not hasFocused then
                                     textValue = ""
                                     hasFocused = true
                                 end
-                                
-                                -- Start cursor blinking
+
                                 spawn(function()
                                     while canType do
                                         if tick() - lastTick >= 0.5 then
@@ -2359,23 +2332,21 @@ local library library = {
                                         RunService.Heartbeat:Wait()
                                     end
                                 end)
-                                
+
                                 updateTextDisplay()
                             end
                         end
                     end)
-                    
-                    -- Handle click outside to lose focus
+
                     UserInputService.InputBegan:Connect(function(inputObject)
                         if inputObject.UserInputType == Enum.UserInputType.MouseButton1 and canType then
                             local mousePos = UserInputService:GetMouseLocation()
                             local absPos = inner.AbsolutePosition
                             local absSize = inner.AbsoluteSize
-                            
-                            -- Check if click is outside the input
+
                             local insideInput = mousePos.X >= absPos.X and mousePos.X <= absPos.X + absSize.X and
-                                            mousePos.Y >= absPos.Y and mousePos.Y <= absPos.Y + absSize.Y
-                            
+                                                mousePos.Y >= absPos.Y and mousePos.Y <= absPos.Y + absSize.Y
+
                             if not insideInput then
                                 canType = false
                                 showCursor = false
@@ -2385,24 +2356,29 @@ local library library = {
                             end
                         end
                     end)
-                    
-                    -- Handle keyboard input
+
                     UserInputService.InputBegan:Connect(function(inputObject)
                         local keycode = inputObject.KeyCode
-                        
-                        -- Strg+V Handling für Einfügen
-                        if (keycode == Enum.KeyCode.V and (UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or 
-                                                        UserInputService:IsKeyDown(Enum.KeyCode.RightControl))) then
-                            handlePaste()
-                            return
-                        end
-                        
+
                         if keycode == Enum.KeyCode.LeftShift or keycode == Enum.KeyCode.RightShift then
                             shift = true
                         end
-                        
+
                         if canType then
-                            -- Enter key to confirm
+                            -- Ctrl+V clipboard paste support
+                            if (keycode == Enum.KeyCode.V) and (UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) or UserInputService:IsKeyDown(Enum.KeyCode.RightControl)) then
+                                local clipboardText = ""
+                                pcall(function()
+                                    clipboardText = getclipboard()
+                                end)
+                                if typeof(clipboardText) == "string" and clipboardText ~= "" then
+                                    textValue = textValue .. clipboardText
+                                    updateTextDisplay()
+                                    self.event:Fire(textValue)
+                                end
+                                return
+                            end
+
                             if keycode == Enum.KeyCode.Return or keycode == Enum.KeyCode.KeypadEnter then
                                 canType = false
                                 showCursor = false
@@ -2411,8 +2387,7 @@ local library library = {
                                 updateTextDisplay()
                                 return
                             end
-                            
-                            -- Escape key to cancel
+
                             if keycode == Enum.KeyCode.Escape then
                                 canType = false
                                 showCursor = false
@@ -2420,17 +2395,16 @@ local library library = {
                                 updateTextDisplay()
                                 return
                             end
-                            
-                            -- Backspace handling
+
                             if keycode == Enum.KeyCode.Backspace then
                                 backspace = true
                                 textValue = textValue:sub(1, -2)
                                 updateTextDisplay()
                                 self.event:Fire(textValue)
-                                
+
                                 local backspaceTick = tick()
                                 local backspaceDelay = 0.5
-                                
+
                                 spawn(function()
                                     while backspace do
                                         if tick() - backspaceTick >= backspaceDelay then
@@ -2444,25 +2418,21 @@ local library library = {
                                     end
                                 end)
                             end
-                            
-                            -- Space bar
+
                             if keycode == Enum.KeyCode.Space then
                                 textValue = textValue .. " "
                                 updateTextDisplay()
                                 self.event:Fire(textValue)
                             end
-                            
-                            -- Handle alphanumeric input
+
                             local char = nil
-                            
-                            -- Numbers
+
                             if keycode.Value >= 48 and keycode.Value <= 57 then
                                 local numbers = {
                                     Zero = "0", One = "1", Two = "2", Three = "3", Four = "4",
                                     Five = "5", Six = "6", Seven = "7", Eight = "8", Nine = "9"
                                 }
                                 char = numbers[keycode.Name]
-                                
                                 if shift then
                                     local shiftNumbers = {
                                         ["0"] = ")", ["1"] = "!", ["2"] = "@", ["3"] = "#", ["4"] = "$",
@@ -2472,12 +2442,10 @@ local library library = {
                                 end
                             end
 
-                            -- Letters
                             if keycode.Name:match("^[A-Z]$") then
                                 char = shift and keycode.Name or keycode.Name:lower()
                             end
-                            
-                            -- Punctuation and special characters
+
                             local punctuationMap = {
                                 [Enum.KeyCode.Comma] = {normal = ",", shift = "<"},
                                 [Enum.KeyCode.Period] = {normal = ".", shift = ">"},
@@ -2491,13 +2459,11 @@ local library library = {
                                 [Enum.KeyCode.Equals] = {normal = "=", shift = "+"},
                                 [Enum.KeyCode.Tilde] = {normal = "`", shift = "~"}
                             }
-                            
-                            -- Check for punctuation keys
+
                             if punctuationMap[keycode] then
                                 char = shift and punctuationMap[keycode].shift or punctuationMap[keycode].normal
                             end
-                            
-                            -- Add character if valid
+
                             if char then
                                 textValue = textValue .. char
                                 updateTextDisplay()
@@ -2505,48 +2471,45 @@ local library library = {
                             end
                         end
                     end)
-                    
+
                     UserInputService.InputEnded:Connect(function(inputObject)
                         local keycode = inputObject.KeyCode
-                        
                         if keycode == Enum.KeyCode.LeftShift or keycode == Enum.KeyCode.RightShift then
                             shift = false
                         elseif keycode == Enum.KeyCode.Backspace then
                             backspace = false
                         end
                     end)
-                    
-                    -- Utility functions
+
                     function self.setText(text)
                         textValue = text or ""
                         updateTextDisplay()
                     end
-                    
+
                     function self.getText()
                         return textValue
                     end
-                    
+
                     function self.setColor(color)
                         inner.ImageColor3 = color
                     end
-                    
+
                     function self.getColor()
                         return inner.ImageColor3
                     end
-                    
+
                     function self:Destroy()
                         if canType then
                             enableMovement()
                         end
                         input:Destroy()
                     end
-                    
+
                     self.options = inputOptions
                     self.self = input
-                    
-                    -- Initial display
+
                     updateTextDisplay()
-                    
+
                     return self
                 end
 				
