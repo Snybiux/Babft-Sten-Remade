@@ -2432,7 +2432,7 @@ local library library = {
                     end
                     
                     function self.setMaxLength(length)
-                        inputOptions.maxlength = math.max(1, tonumber(length) or 100)
+                        inputOptions.maxlength = math.max(1, tonumber(length) or 1000)
                         if #textValue > inputOptions.maxlength then
                             self.setText(textValue:sub(1, inputOptions.maxlength))
                         end
