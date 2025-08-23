@@ -2227,14 +2227,14 @@ local library library = {
 
                 function types.input(inputOptions)
                     local self = {}
-                    
+
                     local UserInputService = game:GetService("UserInputService")
                     local RunService = game:GetService("RunService")
                     local TextService = game:GetService("TextService")
-                    
+
                     self.event = event.new()
                     self.eventBlock = false
-                    
+
                     inputOptions = settings.new({
                         text = "New Input",
                         placeholder = "Enter text...",
@@ -2242,129 +2242,107 @@ local library library = {
                         rounding = options.rounding,
                         clearonfocus = true,
                         size = 150,
-                        maxlength = 500,
+                        maxlength = 512, -- Mehr Platz für lange Links
                         numbersonly = false,
                         textscaled = false,
                     }).handle(inputOptions)
-                    
+
                     local input = new("Dropdown")
                     input.Parent = items
-                    
+
                     local outer = input:FindFirstChild("Outer")
                     local inner = outer:FindFirstChild("Inner")
                     local value = inner:FindFirstChild("Value")
                     local label = input:FindFirstChild("Text")
-                    
-                    -- Unsichtbare TextBox für Eingaben
+
                     local textBox = Instance.new("TextBox")
                     textBox.Size = UDim2.new(0, 0, 0, 0)
-                    textBox.Position = UDim2.new(-10, 0, -10, 0) -- Außerhalb des Bildschirms
+                    textBox.Position = UDim2.new(-10, 0, -10, 0)
                     textBox.BackgroundTransparency = 1
                     textBox.Text = ""
                     textBox.TextColor3 = Color3.new(0, 0, 0)
                     textBox.ClearTextOnFocus = false
                     textBox.Parent = inner
                     textBox.Visible = false
-                    
-                    -- Style the input
+
                     outer.SliceScale = inputOptions.rounding / 100
                     inner.SliceScale = inputOptions.rounding / 100
                     inner.ImageColor3 = inputOptions.color
-                    
+
                     label.Text = inputOptions.text
                     outer.Size = UDim2.new(0, inputOptions.size, 0, 20)
                     label.Position = UDim2.new(0, inputOptions.size + 8, 0, 0)
                     input.Size = UDim2.new(0, inputOptions.size + 8 + label.TextBounds.X, 0, 20)
-                    
-                    -- Input state management
+
                     local textValue = ""
                     local canType = false
-                    local shift = false
-                    local ctrl = false
-                    local hasFocused = false
-                    
-                    -- Cursor state
-                    local lastTick = tick()
                     local showCursor = false
-                    
-                    -- Make the entire inner area clickable
+                    local hasFocused = false
+                    local lastTick = tick()
+
                     inner.Active = true
                     inner.AutoButtonColor = false
-                    
-                    -- Funktion zur Textformatierung
+
                     local function formatText(text)
                         if inputOptions.numbersonly then
                             return text:gsub("%D", "")
                         end
                         return text
                     end
-                    
-                    -- Funktion zur Textkürzung mit Ellipsis
+
                     local function truncateText(text, maxWidth)
                         if not inputOptions.textscaled or maxWidth <= 0 then
                             return text
                         end
-                        
+
                         local truncated = text
                         local textSize = TextService:GetTextSize(truncated, value.TextSize, value.Font, Vector2.new(math.huge, math.huge))
-                        
+
                         while textSize.X > maxWidth and #truncated > 0 do
                             truncated = truncated:sub(1, -2)
                             textSize = TextService:GetTextSize(truncated .. "...", value.TextSize, value.Font, Vector2.new(math.huge, math.huge))
                         end
-                        
+
                         if #truncated < #text then
                             return truncated .. "..."
                         end
-                        
+
                         return text
                     end
-                    
-                    -- Update text display
+
                     local function updateTextDisplay()
                         if canType then
                             local displayText = textValue
-                            
-                            -- Füge Cursor hinzu
                             if showCursor then
                                 displayText = displayText .. "|"
                             end
-                            
-                            -- Kürze Text wenn nötig
                             local maxWidth = inner.AbsoluteSize.X - 10
-                            displayText = truncateText(displayText, maxWidth)
-                            
-                            value.Text = displayText
+                            value.Text = truncateText(displayText, maxWidth)
                             value.TextColor3 = Color3.new(1, 1, 1)
                         elseif textValue == "" then
                             value.Text = inputOptions.placeholder
                             value.TextColor3 = Color3.fromRGB(178, 178, 178)
                         else
-                            -- Kürze Text wenn nötig
                             local maxWidth = inner.AbsoluteSize.X - 10
-                            local displayText = truncateText(textValue, maxWidth)
-                            
-                            value.Text = displayText
+                            value.Text = truncateText(textValue, maxWidth)
                             value.TextColor3 = Color3.new(1, 1, 1)
                         end
                     end
-                    
-                    -- Handle click to focus
+
                     inner.MouseButton1Click:Connect(function()
                         if findBrowsingTopMost() == main then
                             if not canType then
                                 canType = true
-                                
+
                                 if inputOptions.clearonfocus and not hasFocused then
                                     textValue = ""
                                     hasFocused = true
                                 end
-                                
-                                -- TextBox für Eingaben aktivieren
+
                                 textBox.Visible = true
+                                textBox.Text = textValue -- Vorheriger Text bleibt erhalten
                                 textBox:CaptureFocus()
-                                
-                                -- Start cursor blinking
+
                                 spawn(function()
                                     while canType do
                                         if tick() - lastTick >= 0.5 then
@@ -2375,42 +2353,35 @@ local library library = {
                                         RunService.Heartbeat:Wait()
                                     end
                                 end)
-                                
+
                                 updateTextDisplay()
                             end
                         end
                     end)
-                    
-                    -- TextBox Event-Handler
+
                     textBox.FocusLost:Connect(function()
                         canType = false
                         showCursor = false
                         textBox.Visible = false
+
+                        local finalText = formatText(textBox.Text):sub(1, inputOptions.maxlength)
+                        textValue = finalText
                         self.event:Fire(textValue)
                         updateTextDisplay()
                     end)
-                    
+
                     textBox:GetPropertyChangedSignal("Text"):Connect(function()
                         if canType then
                             local newText = formatText(textBox.Text)
-                            
-                            if #newText <= inputOptions.maxlength then
-                                textValue = newText
-                                updateTextDisplay()
-                                self.event:Fire(textValue)
+                            if #newText > inputOptions.maxlength then
+                                newText = newText:sub(1, inputOptions.maxlength)
                             end
-                            
-                            -- TextBox zurücksetzen für weitere Eingaben
-                            textBox.Text = ""
+                            textValue = newText
+                            updateTextDisplay()
+                            self.event:Fire(textValue)
                         end
                     end)
-                    
-                    -- Handle special keys in TextBox
-                    textBox.Focused:Connect(function()
-                        textBox.Text = "" -- Clear when focused to capture new input
-                    end)
-                    
-                    -- Utility functions
+
                     function self.setText(text)
                         if text then
                             textValue = formatText(tostring(text)):sub(1, inputOptions.maxlength)
@@ -2418,45 +2389,44 @@ local library library = {
                             self.event:Fire(textValue)
                         end
                     end
-                    
+
                     function self.getText()
                         return textValue
                     end
-                    
+
                     function self.setColor(color)
                         inner.ImageColor3 = color
                     end
-                    
+
                     function self.getColor()
                         return inner.ImageColor3
                     end
-                    
+
                     function self.setMaxLength(length)
-                        inputOptions.maxlength = math.max(1, tonumber(length) or 100)
+                        inputOptions.maxlength = math.max(1, tonumber(length) or 512)
                         if #textValue > inputOptions.maxlength then
                             self.setText(textValue:sub(1, inputOptions.maxlength))
                         end
                     end
-                    
+
                     function self.setNumbersOnly(numbersOnly)
                         inputOptions.numbersonly = not not numbersOnly
                         if inputOptions.numbersonly then
                             self.setText(textValue)
                         end
                     end
-                    
+
                     function self:Destroy()
                         canType = false
                         textBox:Destroy()
                         input:Destroy()
                     end
-                    
+
                     self.options = inputOptions
                     self.self = input
-                    
-                    -- Initial display
+
                     updateTextDisplay()
-                    
+
                     return self
                 end
 				
